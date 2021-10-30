@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\ClassLibrary1.csproj" />
     <ProjectReference Include="..\Format\Format.csproj" />
+    <ProjectReference Include="..\Function\Function.csproj" />
   </ItemGroup>
 
 </Project>
