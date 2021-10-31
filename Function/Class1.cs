@@ -6,12 +6,15 @@ namespace Function
     public class Class1
     {
         public string operator0 = " ";
-
+        public double? yu = null;
+        /// <summary>
+        /// 构造函数，创建示例即创建了一个计算器
+        /// </summary>
         public Class1()
         {
-            Console.WriteLine("Hello World!");
+            //Console.WriteLine("Hello World!");
 
-            Hashtable ht = new Hashtable();
+            Hashtable ht = new();
             ht.Add("1", "+");
             ht.Add("2", "-");
             ht.Add("3", "*");
@@ -27,11 +30,21 @@ namespace Function
             Console.WriteLine("1\t+\n2\t-\n3\t*\n4\t/\n");
             operator0 = Console.ReadLine();
             var r = GetR(operator0, number1, number2);
+            if (yu != null && yu != 0)
+            {
+                Console.WriteLine($"{number1}\t{(string)ht[operator0]}\t{number2}={r}……{yu}");
+                return;
+            }
 
             Console.WriteLine($"{number1}\t{(string)ht[operator0]}\t{number2}={r}");
 
 
         }
+        /// <summary>
+        /// 检查是否为数字，并且通过递归函数要求直到输入数字为止
+        /// </summary>
+        /// <param name="numberString">用户输入的值</param>
+        /// <returns>将输入的字符转为数字</returns>
         static double CheckNumber(string numberString)
         {
             try
@@ -45,9 +58,31 @@ namespace Function
                 return CheckNumber(Console.ReadLine());
             }
         }
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+        /// <summary>
+        /// 获取运算结果
+        /// </summary>
+        /// <param name="o">运算符所对应的数字的字符串形式</param>
+        /// <param name="n1">第一个数字</param>
+        /// <param name="n2">第二个数字</param>
+        /// <returns>运算结果</returns>
         double? GetR(string o, double n1, double n2)
         {
-            double? r = null;
+            double? r;
             switch (o)
             {
                 case "1":
@@ -60,8 +95,18 @@ namespace Function
                     r = n1 * n2;
                     break;
                 case "4":
-                    r = n1 / n2;
-                    break;
+                    yu = n1 % n2;
+                    if (yu == 0)
+                    {
+                        r = n1 / n2;
+                        break;
+                    }
+                    else
+                    {
+                        r = (int)n1 / n2;
+                        break;
+                    }
+
                 default:
                     Console.WriteLine("error，please press again to select operator");
                     operator0 = Console.ReadLine();
