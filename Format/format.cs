@@ -4,9 +4,7 @@ namespace Format
 {
     public class FormatOne
     {
-        public FormatOne() {
-            Console.WriteLine("字符串格式化");
-        }
+        public FormatOne() => Console.WriteLine("字符串格式化");
         /// <summary>
         /// 字符串格式化
         /// </summary>
@@ -15,7 +13,7 @@ namespace Format
             string a = "hello world";
             string c = "hello world";
             // 首字母大写
-            string b = a.Substring(0, 1).ToUpper() + a.Substring(1);
+            string b = a.Substring(0, 1).ToUpper() + a[1..];
             Console.WriteLine($"首字母大写\t{b}");
             Console.WriteLine("比较");
             Console.WriteLine(a.Equals("hello world"));// 返回 true or false
