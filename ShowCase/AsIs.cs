@@ -1,14 +1,21 @@
-﻿using System;
+﻿using DllTwo;
+using System;
 using System.Reflection;
 
 namespace ShowCase
 {
-    class AsIs
+    internal class AsIs
     {
         /// <summary>
         /// 常量，除了不可更改，只能用调用静态变量的方式调用
         /// </summary>
-        const int a = 1;
+        private const int a = 1;
+
+        public static void TwoStatic()
+        {
+            Console.WriteLine(a);
+        }
+
         //object a = "123";
         public void One(object c)
         {
@@ -46,19 +53,24 @@ namespace ShowCase
 
             // 类型
         }
+
         public void Two()
         {
+            Console.WriteLine("......................");
             Console.WriteLine(a);
+            Console.WriteLine(new Class1().getName());
+            Console.WriteLine("======================");
         }
-        public static void TwoStatic()
-        {
-            Console.WriteLine(a);
 
+        internal void RefOut()
+        {
+            Console.WriteLine(new PropertyTry().Name);
         }
+
         /// <summary>
         /// 数据类型转换
         /// </summary>
-        void ShuJvLeiXingZhuanHuan()
+        private void ShuJvLeiXingZhuanHuan()
         {
             // 隐式数据转换
             int sa = 1;
@@ -73,52 +85,14 @@ namespace ShowCase
             // Parse
             string dp = "12.5";
             double.Parse(dp);
-            // Convert 
+            // Convert
             Convert.ToInt32(sdd);
-
-        }
-        internal void RefOut()
-        {
-            Console.WriteLine(new PropertyTry().Name);
-
         }
     }
 
-    class PropertyTry
-    {
-        public PropertyTry()
-        {
-        }
-
-        public PropertyTry(string name) => this.Name = name ?? throw new ArgumentNullException(nameof(name));
-
-        public string Name { get; set; } = "Hello world";
-
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return "测试属性和变量";
-        }
-    }
-
-    class Operator
+    internal class Operator
     {
         internal readonly int? dd;
-        /// <summary>
-        /// lambda 表达式
-        /// </summary>
-        /// <param name="x">参数x</param>
-        /// <returns>平方</returns>
-        public int LambdaTry(int x) => x * x;
 
         /// <summary>
         /// 没有参数的lambda
@@ -126,18 +100,11 @@ namespace ShowCase
         public void LambadaNoParameter() => Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName);
 
         /// <summary>
-        /// ?? 和？
+        /// lambda 表达式
         /// </summary>
-        public void QuesttionMode()
-        {
-            int? c = null; //默认值是null
-            int? d = 12;
-
-            Console.WriteLine(c ?? 15);
-            Console.WriteLine(d ?? 34);
-            Console.WriteLine(c ??= 12);
-            Console.WriteLine(dd);
-        }
+        /// <param name="x">参数x</param>
+        /// <returns>平方</returns>
+        public int LambdaTry(int x) => x * x;
 
         /// <summary>
         /// is as
@@ -181,6 +148,20 @@ namespace ShowCase
         }
 
         /// <summary>
+        /// ?? 和？
+        /// </summary>
+        public void QuesttionMode()
+        {
+            int? c = null; //默认值是null
+            int? d = 12;
+
+            Console.WriteLine(c ?? 15);
+            Console.WriteLine(d ?? 34);
+            Console.WriteLine(c ??= 12);
+            Console.WriteLine(dd);
+        }
+
+        /// <summary>
         /// 三目运算
         /// </summary>
         /// <param name="day">星期对应的数字</param>
@@ -195,6 +176,31 @@ namespace ShowCase
             Console.WriteLine(weekDay);
             return cc;
         }
+    }
 
+    internal class PropertyTry
+    {
+        public PropertyTry()
+        {
+        }
+
+        public PropertyTry(string name) => this.Name = name ?? throw new ArgumentNullException(nameof(name));
+
+        public string Name { get; set; } = "Hello world";
+
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return "测试属性和变量";
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace Function
     {
         public string operator0 = " ";
         public double? yu = null;
+
         /// <summary>
         /// 构造函数，创建示例即创建了一个计算器
         /// </summary>
@@ -37,15 +38,14 @@ namespace Function
             }
 
             Console.WriteLine($"{number1}\t{(string)ht[operator0]}\t{number2}={r}");
-
-
         }
+
         /// <summary>
         /// 检查是否为数字，并且通过递归函数要求直到输入数字为止
         /// </summary>
         /// <param name="numberString">用户输入的值</param>
         /// <returns>将输入的字符转为数字</returns>
-        static double CheckNumber(string numberString)
+        private static double CheckNumber(string numberString)
         {
             try
             {
@@ -73,6 +73,7 @@ namespace Function
         {
             return base.ToString();
         }
+
         /// <summary>
         /// 获取运算结果
         /// </summary>
@@ -80,7 +81,7 @@ namespace Function
         /// <param name="n1">第一个数字</param>
         /// <param name="n2">第二个数字</param>
         /// <returns>运算结果</returns>
-        double? GetR(string o, double n1, double n2)
+        private double? GetR(string o, double n1, double n2)
         {
             double? r;
             switch (o)
@@ -88,12 +89,15 @@ namespace Function
                 case "1":
                     r = n1 + n2;
                     break;
+
                 case "2":
                     r = n1 - n2;
                     break;
+
                 case "3":
                     r = n1 * n2;
                     break;
+
                 case "4":
                     yu = n1 % n2;
                     if (yu == 0)
@@ -111,7 +115,6 @@ namespace Function
                     Console.WriteLine("error，please press again to select operator");
                     operator0 = Console.ReadLine();
                     return GetR(operator0, n1, n2);
-
             }
             return r;
         }

@@ -5,6 +5,7 @@ namespace Format
     public class FormatOne
     {
         public FormatOne() => Console.WriteLine("字符串格式化");
+
         /// <summary>
         /// 字符串格式化
         /// </summary>
@@ -42,8 +43,6 @@ namespace Format
             Console.WriteLine(int.Parse("12").GetType());
             // number to string
             Console.WriteLine(123.4.ToString().GetType());
-
-
         }
     }
 }

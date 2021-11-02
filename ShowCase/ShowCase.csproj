@@ -13,4 +13,10 @@
     <ProjectReference Include="..\Function\Function.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="DllTwo">
+      <HintPath>..\..\..\..\Desktop\DllTwo\bin\Release\net5.0\publish\DllTwo.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
