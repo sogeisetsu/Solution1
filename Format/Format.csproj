@@ -5,4 +5,9 @@
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <OutputPath></OutputPath>
+    <WarningLevel>3</WarningLevel>
+  </PropertyGroup>
+
 </Project>
