@@ -93,6 +93,9 @@ namespace ShowCase
         }
     }
 
+    /// <summary>
+    /// 一个完整的类
+    /// </summary>
     internal class Book
     {
         public Book()
@@ -107,6 +110,15 @@ namespace ShowCase
             Price = price;
         }
 
+        public readonly string readS = "redaonly";
+
+        public string ReadS
+        {
+            get => this.readS;
+            // 针对readonly字段，在属性中不可以用set访问器
+            init => this.readS = value;
+        }
+
         /// <summary>
         /// init only setter,只能在构造函数中被设置，在其余时间为只读属性
         /// </summary>
@@ -115,6 +127,7 @@ namespace ShowCase
         public string Name { get; set; } = "老人与海";
 
         public double Price { get; set; } = 13.46;
+
         public override bool Equals(object obj)
         {
             return base.Equals(obj);
@@ -135,7 +148,7 @@ namespace ShowCase
             //    //Console.WriteLine(item.GetType());
             //    Console.WriteLine(item.GetValue(book));
             //}
-            return $"Name\t{Name}\nPrice\t{Price}\nInitC\t{InitC}";
+            return $"Name\t{Name}\nPrice\t{Price}\nInitC\t{InitC}\nReads\t{ReadS}";
             //return base.ToString();
         }
     }
@@ -287,6 +300,26 @@ namespace ShowCase
         }
     }
 
+    internal class A
+    {
+        private string name;
+
+        public A()
+        {
+        }
+
+        public A(string name)
+        {
+            this.name = name;
+        }
+
+        public string Name
+        {
+            get => this.name;
+            set => this.name = value;
+        }
+    }
+
     /// <summary>
     /// 检验效果
     /// </summary>
@@ -300,7 +333,8 @@ namespace ShowCase
             Console.WriteLine("-------------------------");
             Console.WriteLine(nameof(Three));
             Three();
-
+            Console.WriteLine("-------------------------");
+            Four();
         }
 
         /// <summary>
@@ -338,6 +372,23 @@ namespace ShowCase
                 Price = 12.45
             };
             Console.WriteLine(book);
+        }
+
+        internal void Four()
+        {
+            Book book = new Book()
+            {
+                ReadS = "12343"
+            };
+            Console.WriteLine(book);
+            Console.WriteLine(book.ReadS);
+            #region
+            // 因为readS为readonly，所以只能在构造器或者初始化器里面定义
+            //book.ReadS = "12";
+            //book.readS = "1231";
+            //如果没有readonly，就可以通过对类的字段进行随意设置了，readonly比private更为严格，readonly所定义的东西只能读
+            //或者在构造器和初始化器中设置，或者在init访问器中设置。private只能保证该字段只能被类中的函数调用。
+            #endregion
         }
     }
 }
