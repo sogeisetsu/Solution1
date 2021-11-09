@@ -1,9 +1,14 @@
 ﻿using System;
-
+using System.Reflection;
 namespace ShowCase
 {
     internal class Program
     {
+        internal static void WeiT()
+        {
+            Console.WriteLine("hello 委托");
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName + MethodBase.GetCurrentMethod().ToString());
+        }
         private static void Main(string[] args)
         {
             #region 
@@ -33,8 +38,17 @@ namespace ShowCase
             //Console.WriteLine(cc == null ? "null" : cc);
             //Console.WriteLine("+++++++++++++++++++++++++");
             //new PropertyTry().ReClass();
+
+            //new Testt();
+
+            //Action action = new Action(WeiT);
+            //Action<string> action1 = new Action<string>(new Testt().WeiT);
+            //action();
+            //action1("你好，非静态委托");
             #endregion
-            new Tset();
+
+            new DY().two();
+
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }

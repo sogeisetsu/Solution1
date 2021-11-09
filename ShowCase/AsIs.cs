@@ -81,6 +81,7 @@ namespace ShowCase
             Console.WriteLine(sd);
             // 显示数据类型转换
             double sdd = 12.435;
+            int cac = (int)sdd;
             // 转换为字符串
             Console.WriteLine(sdd.ToString());
             // 数字转换
@@ -120,13 +121,18 @@ namespace ShowCase
         }
 
         /// <summary>
-        /// init only setter,只能在构造函数中被设置，在其余时间为只读属性
+        /// init only setter,只能在构造函数和初始化器中被设置，在其余时间为只读属性
         /// </summary>
         public int InitC { get; init; } = 12;
 
         public string Name { get; set; } = "老人与海";
 
         public double Price { get; set; } = 13.46;
+
+        internal void TT()
+        {
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name);
+        }
 
         public override bool Equals(object obj)
         {
@@ -303,6 +309,7 @@ namespace ShowCase
     internal class A
     {
         private string name;
+        internal readonly string sex;
 
         public A()
         {
@@ -320,12 +327,52 @@ namespace ShowCase
         }
     }
 
+    internal struct StructA
+    {
+        internal readonly string name;
+        internal readonly string sex;
+        internal int age;
+        internal double high;
+
+        public StructA(string sex) : this()
+        {
+            this.sex = sex ?? throw new ArgumentNullException(nameof(sex));
+        }
+
+        internal readonly string Name { get; init; }
+
+        public readonly string sum(string name, string sex) => $"{name}\t{sex}";
+    }
+
+    /// <summary>
+    /// 只读结构
+    /// </summary>
+    internal readonly struct StructBReadOnly
+    {
+        // 字段必须使只读
+        internal readonly string _name;
+
+        // 属性必须使init
+        internal string Name { get; init; }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        // 默认是只读，不能被本结构中非readonly的成员调用。
+        internal void Hello()
+        {
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType);
+        }
+    }
+
     /// <summary>
     /// 检验效果
     /// </summary>
-    internal class Tset
+    internal class Testt
     {
-        public Tset()
+        public Testt()
         {
             One();
             Console.WriteLine("------------------------");
@@ -335,6 +382,8 @@ namespace ShowCase
             Three();
             Console.WriteLine("-------------------------");
             Four();
+            Console.WriteLine("-------------------------");
+            Six();
         }
 
         /// <summary>
@@ -356,7 +405,7 @@ namespace ShowCase
                 // InitC 只能从构造函数或者启动器里面设置，因为他是init only setter
                 InitC = 124,
                 Name = "1223",
-                Price = 13.456
+                Price = 13.456,
             };
             Console.WriteLine(book);
         }
@@ -374,21 +423,61 @@ namespace ShowCase
             Console.WriteLine(book);
         }
 
+        /// <summary>
+        /// 验证readonly和init的调用
+        /// </summary>
         internal void Four()
         {
             Book book = new Book()
             {
-                ReadS = "12343"
+                ReadS = "12343",
             };
             Console.WriteLine(book);
             Console.WriteLine(book.ReadS);
+            book.TT();
             #region
-            // 因为readS为readonly，所以只能在构造器或者初始化器里面定义
+            // 因为readS为readonly，所以只能在构造器里面定义
             //book.ReadS = "12";
             //book.readS = "1231";
             //如果没有readonly，就可以通过对类的字段进行随意设置了，readonly比private更为严格，readonly所定义的东西只能读
-            //或者在构造器和初始化器中设置，或者在init访问器中设置。private只能保证该字段只能被类中的函数调用。
+            //或者在构造器设置，或者在init访问器中设置。private只能保证该字段只能被类中的函数调用。
             #endregion
+        }
+
+        /// <summary>
+        /// 测试结构
+        /// </summary>
+        internal void Five()
+        {
+            StructA structA = new StructA()
+            {
+                age = 12,
+                high = 1.76,
+                Name = "liu"
+            };
+        }
+
+        /// <summary>
+        /// 测试委托
+        /// </summary>
+        public static void WeiT()
+        {
+            Console.WriteLine("Hello 委托");
+        }
+
+        /// <summary>
+        /// 测试带变量的静态委托
+        /// </summary>
+        /// <param name="name">需要被打印</param>
+        public void WeiT(string name)
+        {
+            Console.WriteLine(name);
+        }
+
+        internal void Six()
+        {
+            StructBReadOnly structBReadOnly = new StructBReadOnly { Name = "只读结构的属性" };
+            structBReadOnly.Hello();
         }
     }
 }
