@@ -6,6 +6,12 @@
     <ApplicationIcon>map.ico</ApplicationIcon>
     <Platforms>AnyCPU;x86;x64</Platforms>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>sdd.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

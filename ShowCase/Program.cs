@@ -1,17 +1,28 @@
 ﻿using System;
 using System.Reflection;
+
 namespace ShowCase
 {
     internal class Program
     {
+        private Action cc;
+
+        /// <summary>
+        /// 委托，此委托可以封装任何没有参数，返回值是string的函数
+        /// </summary>
+        /// <returns>返回值，被委托的函数应该返回字符串</returns>
+        public delegate string GetMethodName();
+
         internal static void WeiT()
         {
             Console.WriteLine("hello 委托");
             Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName + MethodBase.GetCurrentMethod().ToString());
         }
+
         private static void Main(string[] args)
         {
-            #region 
+            #region
+
             //Console.WriteLine("Hello World!");
             //new LibraryOne().One("你好");
             //new Class1();
@@ -45,10 +56,17 @@ namespace ShowCase
             //Action<string> action1 = new Action<string>(new Testt().WeiT);
             //action();
             //action1("你好，非静态委托");
+
             #endregion
-
-            new DY().two();
-
+            Console.WriteLine("不想被破解");
+            //new DY().two();
+            Operator.RefOut refOut = new Operator.RefOut();
+            refOut.TestDiff();
+            Console.WriteLine("---------------------------------");
+            // 委托封装函数
+            GetMethodName name = MethodBase.GetCurrentMethod().DeclaringType.ToString;
+            Console.WriteLine(nameof(name) + "\t" + name.GetType());
+            name();
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }

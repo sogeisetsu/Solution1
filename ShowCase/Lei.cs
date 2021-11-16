@@ -3,8 +3,6 @@ using System.Diagnostics;
 
 namespace ShowCase
 {
-
-
     /// <summary>
     /// 调用类
     /// </summary>
@@ -16,7 +14,6 @@ namespace ShowCase
         internal void One()
         {
             CC cC = new() { High = 12.4, Name = nameof(One), Sex = "woman" };
-
         }
 
         /// <summary>
@@ -27,7 +24,49 @@ namespace ShowCase
             GZ gZ = new GZ();
             Console.WriteLine(gZ.methodName());
             Console.WriteLine(GZ.ss);
+        }
 
+        /// <summary>
+        /// 测试vs 反编译的能力
+        /// </summary>
+        internal void UseDllTwo()
+        {
+            new DllTwo.Class1().getName();
+        }
+
+        /// <summary>
+        /// 验证隐式变换
+        /// </summary>
+        internal void YinShiChange()
+        {
+            Console.WriteLine("-=-=-=-=-=-=-=-=-=-=-=-=");
+            var a = 1;
+            //a += "121"; 这是错误的
+            Console.WriteLine(a.GetType());
+            //在打印的时候是可以的，这时候是将所有的都转换成字符串
+            Console.WriteLine(a + "123");
+            var v = Convert.ToString(a);
+            Console.WriteLine(v.GetType());
+            Type intType = typeof(int);
+            Console.WriteLine(intType == a.GetType());
+            // 值类型的隐式转换
+            var aa = 1;
+            Console.WriteLine(intType == aa.GetType());
+            double cc = aa;
+            Console.WriteLine(cc.GetType() + "\t" + (cc.GetType() == typeof(double)));
+
+            #region
+            /*
+            -=-=-=-=-=-=-=-=-=-=-=-=
+            System.Int32
+            1123
+            System.String
+            True
+            True
+            System.Double   True
+            按下任何键去停止并退出程序
+             */
+            #endregion
         }
     }
 
@@ -47,8 +86,7 @@ namespace ShowCase
         internal const string ChL = "常量";
 
         /// <summary>
-        /// 字段基本上可以对应java的变量，但是建议字段的数据不要直接像客户端公开，而是用方法、属性等公开。
-        /// 访问修饰符建议为private或protected
+        /// 字段基本上可以对应java的变量，但是建议字段的数据不要直接像客户端公开，而是用方法、属性等公开。 访问修饰符建议为private或protected
         /// </summary>
         protected double high = 12.3;
 
@@ -95,8 +133,7 @@ namespace ShowCase
         public string Sex { get; init; } = "男";
 
         /// <summary>
-        /// 修改属性的读写,没有set，故而该属性只能获得不能设置，有点像常量，
-        /// 但是属性背后的字段在符合条件的时候是可以修改的，这点就和常量不一样了
+        /// 修改属性的读写,没有set，故而该属性只能获得不能设置，有点像常量， 但是属性背后的字段在符合条件的时候是可以修改的，这点就和常量不一样了
         /// </summary>
         internal double Pang
         {
@@ -109,7 +146,7 @@ namespace ShowCase
     /// </summary>
     internal class GZ
     {
-        protected int age = 12;
+        private int age = 12;
         protected bool ifMan = true;
         protected string name = "123";
         protected double price = 12.657;
@@ -120,16 +157,15 @@ namespace ShowCase
         /// </summary>
         internal Func<string> methodName = new Func<string>(new StackTrace().GetFrame(1).GetMethod().ToString);
 
+        protected int Age { get => age; set => age = value; }
+
         public GZ()
         {
-            
             Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name);
         }
 
         /// <summary>
-        /// 静态构造函数
-        /// 将在创建第一个实例或引用任何静态成员之前自动调用静态构造函数。无法直接调用
-        /// 静态构造函数不使用访问修饰符或不具有参数。
+        /// 静态构造函数 将在创建第一个实例或引用任何静态成员之前自动调用静态构造函数。无法直接调用 静态构造函数不使用访问修饰符或不具有参数。
         /// </summary>
         static GZ()
         {
@@ -139,22 +175,20 @@ namespace ShowCase
         public GZ(string name, int age)
         {
             this.name = name ?? throw new ArgumentNullException(nameof(name));
-            this.age = age;
+            this.Age = age;
         }
 
         /// <summary>
         /// 构造函数可以使用 this 关键字调用同一对象中的另一构造函数
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="age"></param>
-        /// <param name="price"></param>
-        /// <param name="ifMan"></param>
+        /// <param name="name"> </param>
+        /// <param name="age"> </param>
+        /// <param name="price"> </param>
+        /// <param name="ifMan"> </param>
         public GZ(string name, int age, double price, bool ifMan) : this(name, age)
         {
             this.price = price;
             this.ifMan = ifMan;
         }
     }
-
-
 }

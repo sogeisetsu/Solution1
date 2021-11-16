@@ -57,6 +57,9 @@ namespace ShowCase
             // 类型
         }
 
+        /// <summary>
+        /// 调用Dlltwo
+        /// </summary>
         public void Two()
         {
             Console.WriteLine("......................");
@@ -164,10 +167,12 @@ namespace ShowCase
     /// </summary>
     internal class Operator
     {
+        #region
+
         /// <summary>
         /// lambda的委托方法
         /// </summary>
-        /// <returns>平方</returns>
+        /// <returns> 平方 </returns>
         public Func<int, int> IntPow = x => x * x;
 
         internal readonly int? dd;
@@ -180,8 +185,8 @@ namespace ShowCase
         /// <summary>
         /// lambda 表达式
         /// </summary>
-        /// <param name="x">参数x</param>
-        /// <returns>平方</returns>
+        /// <param name="x"> 参数x </param>
+        /// <returns> 平方 </returns>
         public int LambdaTry(int x) => x * x;
 
         /// <summary>
@@ -256,8 +261,8 @@ namespace ShowCase
         /// <summary>
         /// 三目运算
         /// </summary>
-        /// <param name="day">星期对应的数字</param>
-        /// <returns></returns>
+        /// <param name="day"> 星期对应的数字 </param>
+        /// <returns> </returns>
         internal int ThreeEye(int day)
         {
             // 初级写法
@@ -267,6 +272,165 @@ namespace ShowCase
             string weekDay = day == 0 ? "日" : day == 1 ? "1" : day == 2 ? "2" : day == 3 ? "3" : day == 4 ? "4" : day == 5 ? "5" : day == 6 ? "6" : "error";
             Console.WriteLine(weekDay);
             return cc;
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 在类中定义类
+        /// </summary>
+        internal class RefOut
+        {
+            /// <summary>
+            /// 值类型
+            /// </summary>
+            internal int a = 0;
+
+            /// <summary>
+            /// 引用类型
+            /// </summary>
+            internal Book book1 = new Book();
+
+            public RefOut()
+            {
+            }
+
+            public RefOut(int a, Book book1)
+            {
+                this.a = a;
+                this.book1 = book1;
+            }
+
+            /// <summary>
+            /// 在没有ref或者out关键字的情况下，对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 引用类型 </param>
+            private static void ChangeRAndO(int a, Book book)
+            {
+                a = 2;
+                book.Name = MethodBase.GetCurrentMethod().Name;
+            }
+
+            /// <summary>
+            /// 在ref关键字中，对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 参数类型 </param>
+            private static void ChangeRandO(ref int a, ref Book book)
+            {
+                a = 2;
+                book.Name = MethodBase.GetCurrentMethod().Name + "\tref";
+            }
+
+            /// <summary>
+            /// 在out关键字中对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 参数类型 </param>
+            private static void ChangeRandOOut(out int a, out Book book)
+            {
+                a = 3;
+                book = new Book();
+                book.Name = MethodBase.GetCurrentMethod().Name + "\tout";
+            }
+
+            // TODO 在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
+            /// <summary>
+            /// 试图在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
+            /// </summary>
+            /// <param name="a"> ref 关键字 值类型 </param>
+            /// <param name="b"> 普通值类型 </param>
+            private static void ChangeFiledNotInitForRef(ref int a, int b = 0)
+            {
+                Console.WriteLine("======================");
+
+                Console.WriteLine("在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值");
+                a = 12;
+                b = 3;
+                Console.WriteLine("在函数内部的值");
+                Console.WriteLine($"a\t{a}\nb\t{b}");
+                #region
+                //ParameterInfo[] parameterInfos = MethodBase.GetCurrentMethod().GetParameters();
+                //foreach (var item in parameterInfos)
+                //{
+                //    Console.WriteLine(item.Position);
+                //}
+                #endregion
+                Console.WriteLine("======================");
+            }
+
+            /// <summary>
+            /// 试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值
+            /// </summary>
+            /// <param name="outParam"> 值类型 out关键字 </param>
+            private static void ChangeFiledNotInitForRef(out int outParam)
+            {
+                Console.WriteLine("======================");
+
+                Console.WriteLine("试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值");
+                outParam = 0;
+                Console.WriteLine($"在函数内部的值\noutParam\t{outParam}");
+                Console.WriteLine("======================");
+            }
+
+            /// <summary>
+            /// 检测值类型和引用类型
+            /// </summary>
+            public void test()
+            {
+                #region
+                //void testt()
+                //{
+                //    Console.WriteLine("本地函数");
+                //}
+                //本地函数的lambda实现
+                //void testtd() => Console.WriteLine($"hello world");
+                #endregion
+                Console.WriteLine("原有数据");
+                Console.WriteLine("a\t" + a);
+                Console.WriteLine("name\t" + book1.Name);
+                Console.WriteLine("----------------------");
+                Console.WriteLine("修改之后");
+                a = 1;
+                book1 = new Book();
+                book1.Name = $"{MethodBase.GetCurrentMethod().DeclaringType.FullName}";
+                Console.WriteLine($"book1\t{book1.Name}");
+                Console.WriteLine($"a\t{a}");
+                Console.WriteLine("======================");
+                Console.WriteLine("在函数中对参数进行普通的传递");
+                ChangeRAndO(a, book1);
+                Console.WriteLine($"book1\t{book1.Name}");
+                Console.WriteLine($"a\t{a}");
+                Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!");
+                Console.WriteLine("在函数中对参数进行ref关键字传递");
+                ChangeRandO(ref a, ref book1);
+                Console.WriteLine($"book1\t{book1.Name}");
+                Console.WriteLine($"a\t{a}");
+                Console.WriteLine("---------------------------");
+                Console.WriteLine("在函数中对参数进行out关键字传递");
+                ChangeRandOOut(out a, out book1);
+                Console.WriteLine($"book1\t{book1.Name}");
+                Console.WriteLine($"a\t{a}");
+            }
+
+            // TODO 探寻ref和out的不同
+            /// <summary>
+            /// 测试ref和out关键字的不同
+            /// </summary>
+            internal void TestDiff()
+            {
+                int a = 1;
+                int b = 0;
+
+                ChangeFiledNotInitForRef(ref a);
+                Console.WriteLine($"在函数外部\na\t{a}\nb\t{b}");
+                //ChangeFiledNotInitForRef(ref a);
+                int aa;
+                ChangeFiledNotInitForRef(out aa);
+                Console.WriteLine($"在函数外部\naa\t{aa}");
+                Console.WriteLine("ref 和 out 的区别是ref必须在调用之前赋值，out必须在函数内部赋值");
+            }
         }
     }
 
@@ -468,7 +632,7 @@ namespace ShowCase
         /// <summary>
         /// 测试带变量的静态委托
         /// </summary>
-        /// <param name="name">需要被打印</param>
+        /// <param name="name"> 需要被打印 </param>
         public void WeiT(string name)
         {
             Console.WriteLine(name);
