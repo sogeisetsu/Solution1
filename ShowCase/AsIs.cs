@@ -1,9 +1,72 @@
 ﻿using DllTwo;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace ShowCase
 {
+    internal struct StructA
+    {
+        internal readonly string name;
+        internal readonly string sex;
+        internal int age;
+        internal double high;
+
+        public StructA(string sex) : this()
+        {
+            this.sex = sex ?? throw new ArgumentNullException(nameof(sex));
+        }
+
+        internal readonly string Name { get; init; }
+
+        public readonly string sum(string name, string sex) => $"{name}\t{sex}";
+    }
+
+    /// <summary>
+    /// 只读结构
+    /// </summary>
+    internal readonly struct StructBReadOnly
+    {
+        // 字段必须使只读
+        internal readonly string _name;
+
+        // 属性必须使init
+        internal string Name { get; init; }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+
+        // 默认是只读，不能被本结构中非readonly的成员调用。
+        internal void Hello()
+        {
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType);
+        }
+    }
+
+    internal class A
+    {
+        internal readonly string sex;
+        private string name;
+
+        public A()
+        {
+        }
+
+        public A(string name)
+        {
+            this.name = name;
+        }
+
+        public string Name
+        {
+            get => this.name;
+            set => this.name = value;
+        }
+    }
+
     /// <summary>
     /// 数据类型转换
     /// </summary>
@@ -102,6 +165,8 @@ namespace ShowCase
     /// </summary>
     internal class Book
     {
+        public readonly string readS = "redaonly";
+
         public Book()
         {
         }
@@ -114,15 +179,6 @@ namespace ShowCase
             Price = price;
         }
 
-        public readonly string readS = "redaonly";
-
-        public string ReadS
-        {
-            get => this.readS;
-            // 针对readonly字段，在属性中不可以用set访问器
-            init => this.readS = value;
-        }
-
         /// <summary>
         /// init only setter,只能在构造函数和初始化器中被设置，在其余时间为只读属性
         /// </summary>
@@ -132,9 +188,11 @@ namespace ShowCase
 
         public double Price { get; set; } = 13.46;
 
-        internal void TT()
+        public string ReadS
         {
-            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name);
+            get => this.readS;
+            // 针对readonly字段，在属性中不可以用set访问器
+            init => this.readS = value;
         }
 
         public override bool Equals(object obj)
@@ -160,6 +218,11 @@ namespace ShowCase
             return $"Name\t{Name}\nPrice\t{Price}\nInitC\t{InitC}\nReads\t{ReadS}";
             //return base.ToString();
         }
+
+        internal void TT()
+        {
+            Console.WriteLine(System.Reflection.MethodBase.GetCurrentMethod().Name);
+        }
     }
 
     /// <summary>
@@ -167,7 +230,7 @@ namespace ShowCase
     /// </summary>
     internal class Operator
     {
-        #region
+        #region 普通运算符，is、as、?、？？、lambda、三目
 
         /// <summary>
         /// lambda的委托方法
@@ -200,7 +263,7 @@ namespace ShowCase
              如果左操作数的值不为 null，则 null 合并运算符 ?? 返回该值；否则，它会计算右操作数并返回其结果。
             ?的意思是可以为null
              */
-            #endregion
+            #endregion 普通运算符，is、as、?、？？、lambda、三目
             int? c = null; //默认值是null
             int? d = 12;
 
@@ -276,6 +339,8 @@ namespace ShowCase
 
         #endregion
 
+        #region 方法参数的关键字 ref、out、in、params
+
         /// <summary>
         /// 在类中定义类
         /// </summary>
@@ -299,79 +364,6 @@ namespace ShowCase
             {
                 this.a = a;
                 this.book1 = book1;
-            }
-
-            /// <summary>
-            /// 在没有ref或者out关键字的情况下，对参数进行修改
-            /// </summary>
-            /// <param name="a"> 值类型 </param>
-            /// <param name="book"> 引用类型 </param>
-            private static void ChangeRAndO(int a, Book book)
-            {
-                a = 2;
-                book.Name = MethodBase.GetCurrentMethod().Name;
-            }
-
-            /// <summary>
-            /// 在ref关键字中，对参数进行修改
-            /// </summary>
-            /// <param name="a"> 值类型 </param>
-            /// <param name="book"> 参数类型 </param>
-            private static void ChangeRandO(ref int a, ref Book book)
-            {
-                a = 2;
-                book.Name = MethodBase.GetCurrentMethod().Name + "\tref";
-            }
-
-            /// <summary>
-            /// 在out关键字中对参数进行修改
-            /// </summary>
-            /// <param name="a"> 值类型 </param>
-            /// <param name="book"> 参数类型 </param>
-            private static void ChangeRandOOut(out int a, out Book book)
-            {
-                a = 3;
-                book = new Book();
-                book.Name = MethodBase.GetCurrentMethod().Name + "\tout";
-            }
-
-            // TODO 在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
-            /// <summary>
-            /// 试图在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
-            /// </summary>
-            /// <param name="a"> ref 关键字 值类型 </param>
-            /// <param name="b"> 普通值类型 </param>
-            private static void ChangeFiledNotInitForRef(ref int a, int b = 0)
-            {
-                Console.WriteLine("======================");
-
-                Console.WriteLine("在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值");
-                a = 12;
-                b = 3;
-                Console.WriteLine("在函数内部的值");
-                Console.WriteLine($"a\t{a}\nb\t{b}");
-                #region
-                //ParameterInfo[] parameterInfos = MethodBase.GetCurrentMethod().GetParameters();
-                //foreach (var item in parameterInfos)
-                //{
-                //    Console.WriteLine(item.Position);
-                //}
-                #endregion
-                Console.WriteLine("======================");
-            }
-
-            /// <summary>
-            /// 试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值
-            /// </summary>
-            /// <param name="outParam"> 值类型 out关键字 </param>
-            private static void ChangeFiledNotInitForRef(out int outParam)
-            {
-                Console.WriteLine("======================");
-
-                Console.WriteLine("试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值");
-                outParam = 0;
-                Console.WriteLine($"在函数内部的值\noutParam\t{outParam}");
-                Console.WriteLine("======================");
             }
 
             /// <summary>
@@ -430,8 +422,148 @@ namespace ShowCase
                 ChangeFiledNotInitForRef(out aa);
                 Console.WriteLine($"在函数外部\naa\t{aa}");
                 Console.WriteLine("ref 和 out 的区别是ref必须在调用之前赋值，out必须在函数内部赋值");
+                ChangeParams(1, 2, 4, 56, 6);
+                Console.WriteLine("-=-=-=-=-=-=+++++++++++");
+                StartList();
+            }
+
+            // TODO 在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
+            /// <summary>
+            /// 试图在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
+            /// </summary>
+            /// <param name="a"> ref 关键字 值类型 </param>
+            /// <param name="b"> 普通值类型 </param>
+            private static void ChangeFiledNotInitForRef(ref int a, int b = 0)
+            {
+                Console.WriteLine("======================");
+
+                Console.WriteLine("在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值");
+                a = 12;
+                b = 3;
+                Console.WriteLine("在函数内部的值");
+                Console.WriteLine($"a\t{a}\nb\t{b}");
+                #region
+                //ParameterInfo[] parameterInfos = MethodBase.GetCurrentMethod().GetParameters();
+                //foreach (var item in parameterInfos)
+                //{
+                //    Console.WriteLine(item.Position);
+                //}
+                #endregion
+                Console.WriteLine("======================");
+            }
+
+            // TODO 试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值
+            /// <summary>
+            /// 试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值
+            /// </summary>
+            /// <param name="outParam"> 值类型 out关键字 </param>
+            private static void ChangeFiledNotInitForRef(out int outParam)
+            {
+                Console.WriteLine("======================");
+
+                Console.WriteLine("试图探索out关键字对参数赋值的要求，必须在方法内部进行赋值");
+                outParam = 0;
+                Console.WriteLine($"在函数内部的值\noutParam\t{outParam}");
+                Console.WriteLine("======================");
+            }
+
+            /// <summary>
+            /// 探索in关键字的使用，in关键字必须先初始化，且不能在函数内部进行修改
+            /// </summary>
+            /// <param name="inParam"> 值类型 </param>
+            private static void ChangeIn(in int inParam)
+            {
+                Console.WriteLine("======================");
+                //inParam = 1; 这是错误的，因为in关键字修饰的参数必须不能修改,只能读取
+                Console.WriteLine($"传入的参数\t{inParam}");
+                Console.WriteLine("======================");
+            }
+
+            /// <summary>
+            /// 探索参数关键字params。在方法声明中的 params 关键字之后不允许有任何其他参数， 并且在方法声明中只允许有一个 params 关键字。
+            /// </summary>
+            /// <param name="list"> 数组 </param>
+            private static void ChangeParams(params int[] list)
+            {
+                Console.WriteLine("======================");
+
+                Console.WriteLine(list.GetType());
+                // 将arrary转为list类型
+                Console.WriteLine(list[1..3]);
+                List<int> list1 = list.ToList();
+                Console.WriteLine(list1.GetRange(1, 3));
+                foreach (var item in list)
+                {
+                    Console.WriteLine(item);
+                }
+                Console.WriteLine("======================");
+            }
+
+            /// <summary>
+            /// 在ref关键字中，对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 参数类型 </param>
+            private static void ChangeRandO(ref int a, ref Book book)
+            {
+                a = 2;
+                book.Name = MethodBase.GetCurrentMethod().Name + "\tref";
+            }
+
+            /// <summary>
+            /// 在没有ref或者out关键字的情况下，对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 引用类型 </param>
+            private static void ChangeRAndO(int a, Book book)
+            {
+                a = 2;
+                book.Name = MethodBase.GetCurrentMethod().Name;
+            }
+
+            /// <summary>
+            /// 在out关键字中对参数进行修改
+            /// </summary>
+            /// <param name="a"> 值类型 </param>
+            /// <param name="book"> 参数类型 </param>
+            private static void ChangeRandOOut(out int a, out Book book)
+            {
+                a = 3;
+                book = new Book();
+                book.Name = MethodBase.GetCurrentMethod().Name + "\tout";
+            }
+
+            /// <summary>
+            /// 重载方法使用相同的参数个数和类型，但使用不同的方法参数关键字
+            /// </summary>
+            private class OverLoadFunParamsKeyWords
+            {
+                // TODO(blog) 在方法重载中只允许有无方法参数关键字的区别，但是不允许用不同的方法参数关键字来区分方法的不同重载
+                private static void C(ref int refA)
+                {
+                }
+
+                private static void C(int regularA)
+                {
+                }
+
+                // TODO(blog) 顺便说一句，本地函数不能有访问修饰符，不能被重载，不能被方法外的方法调用
+            }
+
+            /// <summary>
+            /// 调用使用out关键字作为方法参数的修饰的方法的神奇使用技巧
+            /// </summary>
+            private static void StartList()
+            {
+                // TODO(blog) 因为调用使用out关键字的方法的时候，被out关键字修饰的参数必须在参数内部进行赋值，所以可以使用“_”来代替参数。
+                ChangeFiledNotInitForRef(out _);
+                // 上面的调用方式某种程度上来说等于下面这种
+                int a = 1;
+                ChangeFiledNotInitForRef(out a);
             }
         }
+
+        #endregion
     }
 
     /// <summary>
@@ -470,67 +602,6 @@ namespace ShowCase
         }
     }
 
-    internal class A
-    {
-        private string name;
-        internal readonly string sex;
-
-        public A()
-        {
-        }
-
-        public A(string name)
-        {
-            this.name = name;
-        }
-
-        public string Name
-        {
-            get => this.name;
-            set => this.name = value;
-        }
-    }
-
-    internal struct StructA
-    {
-        internal readonly string name;
-        internal readonly string sex;
-        internal int age;
-        internal double high;
-
-        public StructA(string sex) : this()
-        {
-            this.sex = sex ?? throw new ArgumentNullException(nameof(sex));
-        }
-
-        internal readonly string Name { get; init; }
-
-        public readonly string sum(string name, string sex) => $"{name}\t{sex}";
-    }
-
-    /// <summary>
-    /// 只读结构
-    /// </summary>
-    internal readonly struct StructBReadOnly
-    {
-        // 字段必须使只读
-        internal readonly string _name;
-
-        // 属性必须使init
-        internal string Name { get; init; }
-
-        public override string ToString()
-        {
-            return base.ToString();
-        }
-
-        // 默认是只读，不能被本结构中非readonly的成员调用。
-        internal void Hello()
-        {
-            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType);
-        }
-    }
-
     /// <summary>
     /// 检验效果
     /// </summary>
@@ -551,12 +622,69 @@ namespace ShowCase
         }
 
         /// <summary>
+        /// 测试委托
+        /// </summary>
+        public static void WeiT()
+        {
+            Console.WriteLine("Hello 委托");
+        }
+
+        /// <summary>
+        /// 测试带变量的静态委托
+        /// </summary>
+        /// <param name="name"> 需要被打印 </param>
+        public void WeiT(string name)
+        {
+            Console.WriteLine(name);
+        }
+
+        /// <summary>
+        /// 测试结构
+        /// </summary>
+        internal void Five()
+        {
+            StructA structA = new StructA()
+            {
+                age = 12,
+                high = 1.76,
+                Name = "liu"
+            };
+        }
+
+        /// <summary>
+        /// 验证readonly和init的调用
+        /// </summary>
+        internal void Four()
+        {
+            Book book = new Book()
+            {
+                ReadS = "12343",
+            };
+            Console.WriteLine(book);
+            Console.WriteLine(book.ReadS);
+            book.TT();
+            #region
+            // 因为readS为readonly，所以只能在构造器里面定义
+            //book.ReadS = "12";
+            //book.readS = "1231";
+            //如果没有readonly，就可以通过对类的字段进行随意设置了，readonly比private更为严格，readonly所定义的东西只能读
+            //或者在构造器设置，或者在init访问器中设置。private只能保证该字段只能被类中的函数调用。
+            #endregion
+        }
+
+        /// <summary>
         /// 通过构造函数来访问
         /// </summary>
         internal void One()
         {
             Book book = new Book("123", 12.4);
             Console.WriteLine(book);
+        }
+
+        internal void Six()
+        {
+            StructBReadOnly structBReadOnly = new StructBReadOnly { Name = "只读结构的属性" };
+            structBReadOnly.Hello();
         }
 
         /// <summary>
@@ -586,62 +714,6 @@ namespace ShowCase
             };
             Console.WriteLine(book);
         }
-
-        /// <summary>
-        /// 验证readonly和init的调用
-        /// </summary>
-        internal void Four()
-        {
-            Book book = new Book()
-            {
-                ReadS = "12343",
-            };
-            Console.WriteLine(book);
-            Console.WriteLine(book.ReadS);
-            book.TT();
-            #region
-            // 因为readS为readonly，所以只能在构造器里面定义
-            //book.ReadS = "12";
-            //book.readS = "1231";
-            //如果没有readonly，就可以通过对类的字段进行随意设置了，readonly比private更为严格，readonly所定义的东西只能读
-            //或者在构造器设置，或者在init访问器中设置。private只能保证该字段只能被类中的函数调用。
-            #endregion
-        }
-
-        /// <summary>
-        /// 测试结构
-        /// </summary>
-        internal void Five()
-        {
-            StructA structA = new StructA()
-            {
-                age = 12,
-                high = 1.76,
-                Name = "liu"
-            };
-        }
-
-        /// <summary>
-        /// 测试委托
-        /// </summary>
-        public static void WeiT()
-        {
-            Console.WriteLine("Hello 委托");
-        }
-
-        /// <summary>
-        /// 测试带变量的静态委托
-        /// </summary>
-        /// <param name="name"> 需要被打印 </param>
-        public void WeiT(string name)
-        {
-            Console.WriteLine(name);
-        }
-
-        internal void Six()
-        {
-            StructBReadOnly structBReadOnly = new StructBReadOnly { Name = "只读结构的属性" };
-            structBReadOnly.Hello();
-        }
     }
 }
+
