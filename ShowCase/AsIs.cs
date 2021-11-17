@@ -263,7 +263,7 @@ namespace ShowCase
              如果左操作数的值不为 null，则 null 合并运算符 ?? 返回该值；否则，它会计算右操作数并返回其结果。
             ?的意思是可以为null
              */
-            #endregion 普通运算符，is、as、?、？？、lambda、三目
+            #endregion 
             int? c = null; //默认值是null
             int? d = 12;
 
@@ -287,7 +287,7 @@ namespace ShowCase
         /// </summary>
         internal void IsAs()
         {
-            //as 和 is的就是返回值的区别,is返回true或者false，os如果符合就直接返回结果。不符合就返回null
+            //as 和 is的就是返回值的区别,is返回true或者false，as如果符合就直接返回结果。不符合就返回null
             object demoString = "Hello world";
             object demoStringInt = "123";
             object demoInt = 124;
@@ -418,13 +418,15 @@ namespace ShowCase
                 ChangeFiledNotInitForRef(ref a);
                 Console.WriteLine($"在函数外部\na\t{a}\nb\t{b}");
                 //ChangeFiledNotInitForRef(ref a);
-                int aa;
+                int aa=12;
                 ChangeFiledNotInitForRef(out aa);
                 Console.WriteLine($"在函数外部\naa\t{aa}");
                 Console.WriteLine("ref 和 out 的区别是ref必须在调用之前赋值，out必须在函数内部赋值");
                 ChangeParams(1, 2, 4, 56, 6);
                 Console.WriteLine("-=-=-=-=-=-=+++++++++++");
                 StartList();
+                int inin=12;
+                ChangeIn(in inin);
             }
 
             // TODO 在参数没有初始化的情况下对ref参数进行修改，结果表明ref参数必须在函数外进行了赋值
@@ -560,6 +562,106 @@ namespace ShowCase
                 // 上面的调用方式某种程度上来说等于下面这种
                 int a = 1;
                 ChangeFiledNotInitForRef(out a);
+            }
+        }
+
+        #endregion
+
+        #region 匿名函数
+
+        /// <summary>
+        /// lambda 系统讲解
+        /// </summary>
+        internal class LambdaTest
+        {
+            /// <summary>
+            /// 委托声明，委托的本质是表示对具有特定参数列表和返回类型的方法的引用
+            /// </summary>
+            /// <param name="a"> 被委托函数的参数 </param>
+            /// <returns> 被委托函数的返回值 </returns>
+            internal delegate string TDellegate(int a);
+
+            /// <summary>
+            /// 被委托的函数
+            /// </summary>
+            /// <param name="a"> 参数 </param>
+            /// <returns> 返回int类型的string类型 </returns>
+            internal string BeDelegate(int a)
+            {
+                Console.WriteLine("========================");
+                Console.WriteLine("这是被委托的函数");
+                Console.WriteLine("=========================");
+                return a.ToString();
+            }
+
+            /// <summary>
+            /// =>作为表达式主体定义，没有参数的情况
+            /// </summary>
+            /// <returns> 重写ToString </returns>
+            public override string ToString() => "匿名函数以及运算符=>辨析";
+
+            /// <summary>
+            /// =>作为表达式主体定义，有参数的情况
+            /// </summary>
+            /// <param name="x"> </param>
+            internal void MainDefinWithParam(int x) => Console.WriteLine(x + 1);
+
+            #region 无参lambda 使用空括号指定零个输入参数
+            Action Action = () => Console.WriteLine("lambda匿名函数，无参，无返回值。action来实现委托");
+            Func<string> Func1 = () =>
+            {
+                Console.WriteLine("lambda匿名函数，无参，又返回值。func来实现委托");
+                return "lambda匿名函数，无参，又返回值。func来实现委托";
+            };
+            #endregion
+
+            // 有参，一个参数
+            Func<int, int> Func = x => x + 1;
+            // 有参,多个参数
+            Action<int, int> Action1 = (a, b) => Console.WriteLine($"{MethodBase.GetCurrentMethod().GetParameters()}");
+            // 有参，多个参数，指定参数类型
+            Action<int, string> Action2 = (int a, string b) => Console.WriteLine($"{a}\t{b}");
+
+
+            internal void Test()
+            {
+                // 进行委托和调用委托
+                TDellegate dellegate = BeDelegate;
+                dellegate(12);
+
+                //使用委托的匿名函数
+                TDellegate dellegateAnonymous = delegate (int a)
+                {
+                    Console.WriteLine("--------------------------");
+                    Console.WriteLine("这是使用委托创造的匿名");
+                    Console.WriteLine("--------------------------");
+
+                    return "212";
+                };
+                dellegateAnonymous(a: 12);
+
+                // 这是最建议使用委托的方法
+                TDellegate dellegateLambda = x =>
+                {
+                    Console.WriteLine($"委托和lambda的结合{x}");
+                    return "123";
+                };
+                dellegateLambda(123);
+
+                // Action和Func的使用
+                void ActionAndFunc()
+                {
+                    Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName + "\t" + MethodBase.GetCurrentMethod().Name);
+                    // func的泛型中最后一个是返回类型
+                    Func<int, string> func = new Func<int, string>(BeDelegate);
+                    func(21);
+                    // action没有返回值，泛型为参数的值
+                    Action<string> actionWrite = new Action<string>(Console.WriteLine);
+                    actionWrite("action委托");
+                    Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName + "\t" + MethodBase.GetCurrentMethod().Name);
+                }
+
+                ActionAndFunc();
             }
         }
 
@@ -716,4 +818,3 @@ namespace ShowCase
         }
     }
 }
-

@@ -10,7 +10,7 @@ namespace ShowCase
         /// <summary>
         /// 委托，此委托可以封装任何没有参数，返回值是string的函数
         /// </summary>
-        /// <returns>返回值，被委托的函数应该返回字符串</returns>
+        /// <returns> 返回值，被委托的函数应该返回字符串 </returns>
         public delegate string GetMethodName();
 
         internal static void WeiT()
@@ -57,17 +57,24 @@ namespace ShowCase
             //action();
             //action1("你好，非静态委托");
 
+            //Console.WriteLine("不想被破解");
+            ////new DY().two();
+            //Operator.RefOut refOut = new Operator.RefOut();
+            //refOut.TestDiff();
+            //Console.WriteLine("---------------------------------");
+            //// 委托封装函数
+            //GetMethodName name = MethodBase.GetCurrentMethod().DeclaringType.ToString;
+            //Console.WriteLine(nameof(name) + "\t" + name.GetType());
+            //name();
+            //new Hello();
             #endregion
-            Console.WriteLine("不想被破解");
-            //new DY().two();
-            Operator.RefOut refOut = new Operator.RefOut();
-            refOut.TestDiff();
-            Console.WriteLine("---------------------------------");
-            // 委托封装函数
-            GetMethodName name = MethodBase.GetCurrentMethod().DeclaringType.ToString;
-            Console.WriteLine(nameof(name) + "\t" + name.GetType());
-            name();
+
+            //DY dY = new DY();
+            //dY.Three();
+            Operator.LambdaTest lambdaTest = new Operator.LambdaTest();
+            lambdaTest.Test();
             Console.WriteLine("按下任何键去停止并退出程序");
+
             Console.ReadKey(true);
         }
     }

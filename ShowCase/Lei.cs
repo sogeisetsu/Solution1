@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 
 namespace ShowCase
 {
@@ -68,7 +69,18 @@ namespace ShowCase
              */
             #endregion
         }
+
+        /// <summary>
+        /// 调用无参构造函数使私有成员的类
+        /// </summary>
+        internal void Three()
+        {
+            PrivateGZ privateGZ = new PrivateGZ(2);
+            Console.WriteLine(privateGZ.Id);
+        }
     }
+
+    #region 构造函数大全
 
     /// <summary>
     /// 类的成员，类的默认访问修饰符为internal、类的成员的默认访问修饰符为private
@@ -142,7 +154,7 @@ namespace ShowCase
     }
 
     /// <summary>
-    /// 构造函数和overload
+    /// 构造函数和构造函数的overload
     /// </summary>
     internal class GZ
     {
@@ -189,6 +201,44 @@ namespace ShowCase
         {
             this.price = price;
             this.ifMan = ifMan;
+        }
+    }
+
+    /// <summary>
+    /// 私有构造函数，作用是使类无法正常实例化
+    /// </summary>
+    internal class PrivateGZ
+    {
+        internal int Id { get; set; } = 1;
+        /// <summary>
+        /// 私有构造函数
+        /// </summary>
+        private PrivateGZ()
+        {
+        }
+        /// <summary>
+        /// 公开的构造函数，只能以这种方式实例化
+        /// </summary>
+        /// <param name="id">id</param>
+        public PrivateGZ(int id)
+        {
+            Id = id;
+        }
+    }
+
+    #endregion
+}
+
+/// <summary>
+/// 定义新的命名空间
+/// </summary>
+namespace HEIE
+{
+    public class Hello
+    {
+        static Hello()
+        {
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName);
         }
     }
 }
