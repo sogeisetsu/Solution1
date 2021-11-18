@@ -1,0 +1,7 @@
+﻿namespace ShowCase
+{
+    class One
+    {
+
+    }
+}
