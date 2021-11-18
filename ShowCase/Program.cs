@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HEIE;
+using System;
 using System.Reflection;
 
 namespace ShowCase
@@ -67,14 +68,16 @@ namespace ShowCase
             //Console.WriteLine(nameof(name) + "\t" + name.GetType());
             //name();
             //new Hello();
-            #endregion
 
             //DY dY = new DY();
             //dY.Three();
-            Operator.LambdaTest lambdaTest = new Operator.LambdaTest();
-            lambdaTest.Test();
-            Console.WriteLine("按下任何键去停止并退出程序");
+            //Operator.LambdaTest lambdaTest = new Operator.LambdaTest();
+            //lambdaTest.Test();
+            #endregion
 
+            TestA testA = new TestA();
+            testA.One();
+            Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }
     }
