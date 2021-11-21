@@ -77,6 +77,9 @@ namespace ShowCase
 
             TestA testA = new TestA();
             testA.One();
+            //testA.Two();
+            //testA.Three();
+            testA.Four();
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }

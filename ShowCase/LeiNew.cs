@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace HEIE
 {
@@ -83,8 +86,59 @@ namespace HEIE
         }
     }
 
+    /// <summary>
+    /// 常规意义上为实例化对象准备方法
+    /// </summary>
+    internal class DefaultFun
+    {
+        internal string Name { get; set; }
+        /// <summary>
+        /// 可以由实例化对象调用的方法
+        /// </summary>
+        /// <param name="name">准备的新的属性Name的值</param>
+        internal void ChangeName(String name)
+        {
+            if (name.Length >= 3)
+            {
+                this.Name = name;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 为string类型增加拓展方法
+    /// </summary>
+    internal static class stringExtensions
+    {
+        /// <summary>
+        /// demo，试图获取string实例化对象长度的两倍
+        /// </summary>
+        /// <param name="str">此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。</param>
+        /// <returns>原来长度的两倍</returns>
+        internal static int GetTheDoubleLength(this string str)
+        {
+            return str.Length * 2;
+        }
+
+        internal static ArrayList GetArrayList(this string str, int a)
+        {
+            string[] strings = new string[str.Length + 1];
+            for (int i = 0; i < str.Length; i++)
+            {
+
+                strings[i] = str.Substring(i, 1);
+            }
+            strings[str.Length] = a.ToString();
+            ArrayList arrayList = new(strings);
+            return arrayList;
+        }
+    }
+
     internal class TestA
     {
+        /// <summary>
+        /// 混合使用构造器和初始化器
+        /// </summary>
         internal void One()
         {
             // TODO 混合使用构造器和初始化器
@@ -94,6 +148,41 @@ namespace HEIE
             };
 
             Console.WriteLine(book);
+        }
+
+        /// <summary>
+        /// 常规方法实例化对象和调用方法
+        /// </summary>
+        internal void Two()
+        {
+            //实例化对象
+            DefaultFun defaultFun = new DefaultFun();
+            //调用实例化对象的方法
+            defaultFun.ChangeName("新的Name");
+        }
+
+        /// <summary>
+        /// 调用无参拓展方法
+        /// </summary>
+        internal void Three()
+        {
+            var str = "1234";
+            //在使用的时候直接调用就行，直接在实例化对象后面接方法名就行，不用带拓展方法所属于的静态类名
+            int v = str.GetTheDoubleLength();
+            Console.WriteLine(v);
+        }
+
+        /// <summary>
+        /// 调用有参拓展方法
+        /// </summary>
+        internal void Four()
+        {
+            var str = "你好世界";
+            ArrayList arrayList = str.GetArrayList(12);
+            foreach (var item in arrayList)
+            {
+                Console.WriteLine($"{item.GetType()}\t{item}");
+            }
         }
     }
 }
