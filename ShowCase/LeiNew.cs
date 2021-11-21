@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 
 namespace HEIE
 {
@@ -50,6 +51,36 @@ namespace HEIE
         /// 书的价格
         /// </summary>
         protected int Peices { get; init; } = 0;
+
+        /// <summary>
+        /// 析构函数（终结器）
+        /// </summary>
+        ~BookA()
+        {
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            Console.WriteLine("终结器\t在整个程序结束的时候运行");
+        }
+
+        /// <summary>
+        /// overload
+        /// </summary>
+        /// <returns></returns>
+        protected internal string One()
+        {
+            return "验证function overload";
+        }
+
+        protected internal string One(int a)
+        {
+            Console.WriteLine("方法重载");
+            string aString = a.ToString();
+            return aString;
+        }
+
+        protected internal void One(string str)
+        {
+            Console.WriteLine(str);
+        }
     }
 
     internal class TestA
