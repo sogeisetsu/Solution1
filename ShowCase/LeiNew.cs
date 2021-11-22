@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Reflection;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace HEIE
 {
@@ -67,7 +66,7 @@ namespace HEIE
         /// <summary>
         /// overload
         /// </summary>
-        /// <returns></returns>
+        /// <returns> </returns>
         protected internal string One()
         {
             return "验证function overload";
@@ -92,10 +91,11 @@ namespace HEIE
     internal class DefaultFun
     {
         internal string Name { get; set; }
+
         /// <summary>
         /// 可以由实例化对象调用的方法
         /// </summary>
-        /// <param name="name">准备的新的属性Name的值</param>
+        /// <param name="name"> 准备的新的属性Name的值 </param>
         internal void ChangeName(String name)
         {
             if (name.Length >= 3)
@@ -113,19 +113,24 @@ namespace HEIE
         /// <summary>
         /// demo，试图获取string实例化对象长度的两倍
         /// </summary>
-        /// <param name="str">此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。</param>
-        /// <returns>原来长度的两倍</returns>
+        /// <param name="str"> 此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。 </param>
+        /// <returns> 原来长度的两倍 </returns>
         internal static int GetTheDoubleLength(this string str)
         {
             return str.Length * 2;
         }
 
+        /// <summary>
+        /// 将string类型转为arrarylist，并且在结尾加上一个整数a
+        /// </summary>
+        /// <param name="str">要被操作的字符串</param>
+        /// <param name="a">需要加在结尾的整数</param>
+        /// <returns>arrayList集合</returns>
         internal static ArrayList GetArrayList(this string str, int a)
         {
             string[] strings = new string[str.Length + 1];
             for (int i = 0; i < str.Length; i++)
             {
-
                 strings[i] = str.Substring(i, 1);
             }
             strings[str.Length] = a.ToString();
@@ -183,6 +188,103 @@ namespace HEIE
             {
                 Console.WriteLine($"{item.GetType()}\t{item}");
             }
+        }
+
+        /// <summary>
+        /// 测试arrary，arrarylist、list
+        /// </summary>
+        internal void Five()
+        {
+            Console.WriteLine("==================================");
+            // 声明arrary
+            int[] vs = new int[10];
+            // 赋值
+            for (int i = 0; i < vs.Length; i++)
+            {
+                vs[i] = (int)Math.Pow(i, 2);
+            }
+            Console.WriteLine(vs.Contains(12));
+            // 切片
+            Console.WriteLine(string.Join("\n", vs[1..5]));
+            Console.WriteLine("arrarylist，长度和类型不受限制，性能受限制");
+            // 多维数组
+            // 下面定义二维数组
+            int[,] duoWei = new int[3, 4];
+            Console.WriteLine($"多维数组的长度{duoWei.Length}");
+            // 二维数组赋值
+            Console.WriteLine("二维数组赋值");
+            for (int i = 0; i < duoWei.GetLength(0); i++)
+            {
+                for (int j = 0; j < duoWei.GetLength(1); j++)
+                {
+                    duoWei[i, j] = i + j;
+                }
+            }
+            // 定义多维数组要求每个维度的长度都相同
+            // 下面定义交错数组
+            int[][] jiaoCuo = new int[3][]; // 该数组是由三个一维数组组成的
+            // 交错数组赋值
+            Console.WriteLine("交错数组循环赋值");
+            for (int i = 0; i < 3; i++)
+            {
+                jiaoCuo[i] = new int[i + 1];
+            }
+            for (int i = 0; i < jiaoCuo.Length; i++)
+            {
+                Console.WriteLine($"交错数组的第{i + 1}层");
+                for (int j = 0; j < jiaoCuo[i].Length; j++)
+                {
+                    jiaoCuo[i][j] = i + j;
+                    Console.WriteLine(jiaoCuo[i][j]);
+                }
+            }
+            Console.WriteLine("交错数组循环赋值结束");
+
+            // array声明和赋值
+            ArrayList arrayList = new ArrayList(vs);
+            #region 不同的赋值方法
+            //ArrayList arrayList1 = new ArrayList() { 12, 334, 3, true };
+            //ArrayList arrayList2 = new ArrayList(2);
+            //Console.WriteLine("-=-=-=-=-=-=-=-=");
+            //Console.WriteLine(arrayList2.Count);
+            //Console.WriteLine(arrayList2.Capacity);
+            //arrayList2.Add(12);
+            //arrayList2.Add(30);
+            //arrayList2.Add(40);
+            //Console.WriteLine(arrayList2.Count);
+            //Console.WriteLine(arrayList2.Capacity);
+            //arrayList2.TrimToSize();
+            //Console.WriteLine(arrayList2.Capacity);
+            #endregion
+
+            Console.WriteLine("-=-=-=-=-=-=-=-=");
+
+            foreach (var item in arrayList)
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in vs)
+            {
+                arrayList.Add(item.ToString());
+            }
+            Console.WriteLine(arrayList.Count);
+            // 切片,建议先转为arrary，再切片。如果不行才使用getrange
+            Console.WriteLine("切片,建议先转为arrary，再切片。如果不行才使用getrange");
+            try
+            {
+                object[] vs1 = arrayList.ToArray();
+                // 下面这一步会报错，Unable to cast object of type 'System.String' to type 'System.Int32'.
+                int[] vs2 = Array.ConvertAll(vs1, s => (int)s);
+                Console.WriteLine(string.Join("\t", vs2[^3..]));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Console.WriteLine(arrayList.GetRange(1, 7));
+            }
+
+            //List
+
         }
     }
 }
