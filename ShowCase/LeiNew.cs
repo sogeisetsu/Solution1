@@ -123,9 +123,9 @@ namespace HEIE
         /// <summary>
         /// 将string类型转为arrarylist，并且在结尾加上一个整数a
         /// </summary>
-        /// <param name="str">要被操作的字符串</param>
-        /// <param name="a">需要加在结尾的整数</param>
-        /// <returns>arrayList集合</returns>
+        /// <param name="str"> 要被操作的字符串 </param>
+        /// <param name="a"> 需要加在结尾的整数 </param>
+        /// <returns> arrayList集合 </returns>
         internal static ArrayList GetArrayList(this string str, int a)
         {
             string[] strings = new string[str.Length + 1];
@@ -207,8 +207,7 @@ namespace HEIE
             // 切片
             Console.WriteLine(string.Join("\n", vs[1..5]));
             Console.WriteLine("arrarylist，长度和类型不受限制，性能受限制");
-            // 多维数组
-            // 下面定义二维数组
+            // 多维数组 下面定义二维数组
             int[,] duoWei = new int[3, 4];
             Console.WriteLine($"多维数组的长度{duoWei.Length}");
             // 二维数组赋值
@@ -220,15 +219,18 @@ namespace HEIE
                     duoWei[i, j] = i + j;
                 }
             }
-            // 定义多维数组要求每个维度的长度都相同
-            // 下面定义交错数组
+            // 读取多维数组的值
+            Console.WriteLine($"读取多维数组的值duoWei[1,1]\t{duoWei[1, 1]}");
+            // 定义多维数组要求每个维度的长度都相同 下面定义交错数组
             int[][] jiaoCuo = new int[3][]; // 该数组是由三个一维数组组成的
             // 交错数组赋值
             Console.WriteLine("交错数组循环赋值");
+            // 先声明交错数组中每一个数组的长度
             for (int i = 0; i < 3; i++)
             {
                 jiaoCuo[i] = new int[i + 1];
             }
+            // 然后对交错数组中的每一个元素赋值
             for (int i = 0; i < jiaoCuo.Length; i++)
             {
                 Console.WriteLine($"交错数组的第{i + 1}层");
@@ -242,7 +244,9 @@ namespace HEIE
 
             // array声明和赋值
             ArrayList arrayList = new ArrayList(vs);
+
             #region 不同的赋值方法
+
             //ArrayList arrayList1 = new ArrayList() { 12, 334, 3, true };
             //ArrayList arrayList2 = new ArrayList(2);
             //Console.WriteLine("-=-=-=-=-=-=-=-=");
@@ -255,7 +259,8 @@ namespace HEIE
             //Console.WriteLine(arrayList2.Capacity);
             //arrayList2.TrimToSize();
             //Console.WriteLine(arrayList2.Capacity);
-            #endregion
+
+            #endregion 不同的赋值方法
 
             Console.WriteLine("-=-=-=-=-=-=-=-=");
 
@@ -284,7 +289,6 @@ namespace HEIE
             }
 
             //List
-
         }
     }
 }
