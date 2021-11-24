@@ -380,7 +380,21 @@ namespace HEIE
             ArrayList cToArrayList = new ArrayList(c);
             // ArrayList转Array
             object[] bToArray = b.ToArray();
-
+            // 数组的打印
+            // 调用Array.ForEach
+            Array.ForEach(a, item => Console.WriteLine(item));
+            // 传统forEach
+            foreach (var item in a)
+            {
+                Console.WriteLine(item);
+            }
+            // 传统for
+            for (int i = 0; i < a.Count(); i++)
+            {
+                Console.WriteLine(a[i]);
+            }
+            // string.Join
+            Console.WriteLine(string.Join("\t", a));
         }
 
 
