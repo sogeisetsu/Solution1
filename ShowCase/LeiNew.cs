@@ -347,5 +347,42 @@ namespace HEIE
 
 
         }
+
+        /// <summary>
+        /// 测试arrary，arrarylist、list之间的转换
+        /// </summary>
+        internal void SixDifference()
+        {
+            // 声明数组
+            int[] a = new int[] { 1, 3, 4, 5, 656, -1 };
+
+            // 声明多维数组
+            int[,] aD = new int[,] { { 1, 2 }, { 3, 4 } };
+            // 声明交错数组
+            int[][] aJ = new int[][] {
+                new int[]{ 1,2,3},
+                new int[]{ 1}
+            };
+            // 声明ArrayList
+            ArrayList b = new ArrayList() { 1, 2, 344, "233", true };
+            Console.WriteLine(b[3].GetType()); //System.String
+            // 声明List<T>
+            List<int> c = new List<int>();
+
+            // 数组转ArrayList
+            ArrayList aToArrayList = new ArrayList(a);
+            // 数组转List<T>
+            List<int> aToList = new List<int>(a);
+            List<int> aToLista = a.ToList();
+            // List<T>转数组
+            int[] cToList = c.ToArray();
+            // List<T>转ArrayList
+            ArrayList cToArrayList = new ArrayList(c);
+            // ArrayList转Array
+            object[] bToArray = b.ToArray();
+
+        }
+
+
     }
 }
