@@ -381,6 +381,7 @@ namespace HEIE
             // ArrayList转Array
             object[] bToArray = b.ToArray();
             // 数组的打印
+            Console.WriteLine("数组的打印");
             // 调用Array.ForEach
             Array.ForEach(a, item => Console.WriteLine(item));
             // 传统forEach
@@ -395,6 +396,9 @@ namespace HEIE
             }
             // string.Join
             Console.WriteLine(string.Join("\t", a));
+            // ArrayList的打印
+            Console.WriteLine("ArrayList的打印");
+            
         }
 
 
