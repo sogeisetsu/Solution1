@@ -206,6 +206,7 @@ namespace HEIE
             {
                 vs[i] = (int)Math.Pow(i, 2);
             }
+            Array.ForEach(vs, item => Console.WriteLine(item));
             // 方法
             // 改
             vs[0] = 12;
@@ -214,6 +215,7 @@ namespace HEIE
             Console.WriteLine(vs.Contains(12)); // True
             // 切片
             Console.WriteLine(string.Join("\n", vs[1..5]));
+            // array数据类型转换
             double[] vs3 = Array.ConvertAll(vs, item => (double)item);
             Console.WriteLine("arrarylist，长度和类型不受限制，性能受限制");
             // 多维数组 下面定义二维数组
@@ -252,6 +254,16 @@ namespace HEIE
             }
             Console.WriteLine("交错数组循环赋值结束");
             jiaoCuo[1][1] = 2;
+            // 可以采用下面的方式来获取单个元素和为单个元素单独赋值
+            // 一维数组
+            Console.WriteLine(vs[1]);
+            vs[1] = 2;
+            // 多维数组
+            Console.WriteLine(duoWei[1, 2]);
+            duoWei[1, 2] = 3;
+            // 交错数组
+            Console.WriteLine(jiaoCuo[1][0]);
+            jiaoCuo[1][0] = 0;
 
             // array声明和赋值
             ArrayList arrayList = new ArrayList(vs);
@@ -330,7 +342,6 @@ namespace HEIE
             listA[1] = "改变";
             // 切片
             Console.WriteLine(listA.GetRange(1, 1).Count);
-
 
 
 
