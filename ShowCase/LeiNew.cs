@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -198,14 +199,22 @@ namespace HEIE
             Console.WriteLine("==================================");
             // 声明arrary
             int[] vs = new int[10];
+            Console.WriteLine(vs.Length);
+            Console.WriteLine(vs.Count());
             // 赋值
             for (int i = 0; i < vs.Length; i++)
             {
                 vs[i] = (int)Math.Pow(i, 2);
             }
-            Console.WriteLine(vs.Contains(12));
+            // 方法
+            // 改
+            vs[0] = 12;
+            // 查
+            Console.WriteLine(Array.IndexOf(vs, 12)); //0
+            Console.WriteLine(vs.Contains(12)); // True
             // 切片
             Console.WriteLine(string.Join("\n", vs[1..5]));
+            double[] vs3 = Array.ConvertAll(vs, item => (double)item);
             Console.WriteLine("arrarylist，长度和类型不受限制，性能受限制");
             // 多维数组 下面定义二维数组
             int[,] duoWei = new int[3, 4];
@@ -221,6 +230,7 @@ namespace HEIE
             }
             // 读取多维数组的值
             Console.WriteLine($"读取多维数组的值duoWei[1,1]\t{duoWei[1, 1]}");
+            duoWei[1, 2] = 3;
             // 定义多维数组要求每个维度的长度都相同 下面定义交错数组
             int[][] jiaoCuo = new int[3][]; // 该数组是由三个一维数组组成的
             // 交错数组赋值
@@ -241,6 +251,7 @@ namespace HEIE
                 }
             }
             Console.WriteLine("交错数组循环赋值结束");
+            jiaoCuo[1][1] = 2;
 
             // array声明和赋值
             ArrayList arrayList = new ArrayList(vs);
@@ -289,6 +300,41 @@ namespace HEIE
             }
 
             //List
+            Console.WriteLine("List<T>");
+            // 声明
+            List<string> listA = new List<string>() { "hello", " ", "wrold" };
+            // 属性 长度
+            Console.WriteLine(listA.Count);
+            // 属性 取值
+            Console.WriteLine(listA[0]);
+            // 循环
+            var ia = 0;
+            listA.ForEach(item =>
+            {
+                Console.WriteLine($"第{ia + 1}个");
+                Console.WriteLine(item);
+                ia++;
+            });
+            // 方法
+            // 增
+            listA.Add("12");
+            // 查
+            Console.WriteLine(listA.IndexOf("12"));
+            Console.WriteLine(listA.Contains("12"));
+            // 删
+            listA.Remove("12");
+            listA.RemoveAt(1);
+            // 转
+            List<object> listObject = listA.ConvertAll(s => (object)s);
+            // 改
+            listA[1] = "改变";
+            // 切片
+            Console.WriteLine(listA.GetRange(1, 1).Count);
+
+
+
+
+
         }
     }
 }
