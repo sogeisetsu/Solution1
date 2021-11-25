@@ -79,10 +79,11 @@ namespace ShowCase
             testA.One();
             //testA.Two();
             //testA.Three();
-            testA.Four();
+            //testA.Four();
             //testA.Five();
             Console.WriteLine("-=-=-=-=-=-=-=-=-=-");
-            testA.SixDifference();
+            //testA.SixDifference();
+            testA.Seven();
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }

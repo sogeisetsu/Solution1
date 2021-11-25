@@ -398,7 +398,35 @@ namespace HEIE
             Console.WriteLine(string.Join("\t", a));
             // ArrayList的打印
             Console.WriteLine("ArrayList的打印");
-            
+
+        }
+
+        /// <summary>
+        /// 集合
+        /// </summary>
+        internal void Seven()
+        {
+            Hashtable hashtable = new Hashtable();
+            for (int i = 0; i < 10; i++)
+            {
+                hashtable.Add(i, i.ToString() + "值");
+            }
+            Console.WriteLine(hashtable);
+            Console.WriteLine(hashtable[1].GetType());
+            foreach (DictionaryEntry item in hashtable)
+            {
+
+                Console.WriteLine(item);
+                Console.WriteLine(item.Key);
+                Console.WriteLine(item.Value);
+                /*
+                 
+                 System.Collections.DictionaryEntry
+                 5
+                 5值
+                 */
+                Console.WriteLine("-=-=-=-=-=-=-=-=-=");
+            }
         }
 
 
