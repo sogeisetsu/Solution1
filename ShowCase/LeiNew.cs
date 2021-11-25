@@ -427,6 +427,16 @@ namespace HEIE
                  */
                 Console.WriteLine("-=-=-=-=-=-=-=-=-=");
             }
+            Console.WriteLine("sortedList");
+            SortedList sortedList = new SortedList();
+            for (var i = 0; i < 10; i++)
+            {
+                sortedList.Add(i, i.ToString());
+            }
+            for (int i = 0; i < sortedList.Count; i++)
+            {
+                Console.WriteLine($"{sortedList.GetKey(i)}\t{sortedList.GetByIndex(i)}");
+            }
         }
 
 
