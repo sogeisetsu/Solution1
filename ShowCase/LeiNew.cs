@@ -483,6 +483,26 @@ namespace HEIE
             }
         }
 
+        /// <summary>
+        /// 集合类型的转换
+        /// </summary>
+        internal void Eight()
+        {
+            Hashtable hashtable = new Hashtable() {
+                { 1,1},
+                { 2,2}
+            };
+            // hashtable 转 Dict
+            Dictionary<int, int> dictionary = new Dictionary<int, int>();
+            foreach (DictionaryEntry item in hashtable)
+            {
+                dictionary.Add((int)item.Key, (int)item.Value);
+            }
+            // Dict转Hashtable
+            Hashtable hashtable1 = new Hashtable(dictionary);
+
+        }
+
 
     }
 }

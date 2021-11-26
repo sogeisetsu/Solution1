@@ -83,7 +83,8 @@ namespace ShowCase
             //testA.Five();
             Console.WriteLine("-=-=-=-=-=-=-=-=-=-");
             //testA.SixDifference();
-            testA.Seven();
+            //testA.Seven();
+            testA.Eight();
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }
