@@ -501,7 +501,14 @@ namespace HEIE
             // Dict转Hashtable
             Hashtable hashtable1 = new Hashtable(dictionary);
 
+            foreach (var item in dictionary)
+            {
+                Console.WriteLine($"key:{item.Key}\tvalue:{item.Value}");
+            }
+
         }
+
+
 
 
     }
