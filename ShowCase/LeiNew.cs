@@ -437,6 +437,50 @@ namespace HEIE
             {
                 Console.WriteLine($"{sortedList.GetKey(i)}\t{sortedList.GetByIndex(i)}");
             }
+            Console.WriteLine("HashSet<T>");
+            HashSet<int?> setA = new HashSet<int?>() { 1, 2, 3 };
+            HashSet<int?> setB = new HashSet<int?>() { 1, 2, 3, 4, 5 };
+            HashSet<int?> setC = setB;
+            // 确定setA是否为setB的真子集
+            Console.WriteLine(setA.IsProperSubsetOf(setB)); // True
+            Console.WriteLine(setC.IsProperSubsetOf(setB)); // False
+            setA.Add(null);
+            // 求两个的并集
+            setA.UnionWith(setB);
+            // 现在setA就是两个集合的并集
+            foreach (var item in setA)
+            {
+                Console.WriteLine(item);
+            }
+            // 求交集
+            setA.IntersectWith(setB);
+            // 现在setA就是两个的交集
+            foreach (var item in setA)
+            {
+                Console.WriteLine(item);
+            }
+            // 去除交集，从当前 HashSet<T> 对象中移除指定集合中的所有元素。
+            setA.ExceptWith(setB);
+            foreach (var item in setA)
+            {
+                Console.WriteLine(item);
+            }
+            //仅包含存在于该对象中或存在于指定集合中的元素（但并非两者）。
+            setA.SymmetricExceptWith(setB);
+            foreach (var item in setA)
+            {
+                Console.WriteLine(item);
+            }
+
+            Dictionary<int, string> dictionary = new Dictionary<int, string>() {
+                { 1,"Hello"},
+                { 2," "},
+                { 3,"world"}
+            };
+            foreach (KeyValuePair<int, string> item in dictionary)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}\tover");
+            }
         }
 
 
