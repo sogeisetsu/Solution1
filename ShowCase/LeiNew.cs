@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Text.Unicode;
 
 namespace HEIE
 {
@@ -34,6 +38,7 @@ namespace HEIE
         /// <summary>
         /// 作者
         /// </summary>
+        [JsonPropertyName("作者")]
         public string Author
         {
             get { return _author; }
@@ -48,12 +53,12 @@ namespace HEIE
         /// <summary>
         /// 书的名称
         /// </summary>
-        protected string Name { get; set; } = "《书名》";
+        internal string Name { get; set; } = "《书名》";
 
         /// <summary>
         /// 书的价格
         /// </summary>
-        protected int Peices { get; init; } = 0;
+        internal int Peices { get; init; } = 0;
 
         /// <summary>
         /// 析构函数（终结器）
@@ -207,8 +212,7 @@ namespace HEIE
                 vs[i] = (int)Math.Pow(i, 2);
             }
             Array.ForEach(vs, item => Console.WriteLine(item));
-            // 方法
-            // 改
+            // 方法 改
             vs[0] = 12;
             // 查
             Console.WriteLine(Array.IndexOf(vs, 12)); //0
@@ -254,8 +258,7 @@ namespace HEIE
             }
             Console.WriteLine("交错数组循环赋值结束");
             jiaoCuo[1][1] = 2;
-            // 可以采用下面的方式来获取单个元素和为单个元素单独赋值
-            // 一维数组
+            // 可以采用下面的方式来获取单个元素和为单个元素单独赋值 一维数组
             Console.WriteLine(vs[1]);
             vs[1] = 2;
             // 多维数组
@@ -327,8 +330,7 @@ namespace HEIE
                 Console.WriteLine(item);
                 ia++;
             });
-            // 方法
-            // 增
+            // 方法 增
             listA.Add("12");
             // 查
             Console.WriteLine(listA.IndexOf("12"));
@@ -342,10 +344,6 @@ namespace HEIE
             listA[1] = "改变";
             // 切片
             Console.WriteLine(listA.GetRange(1, 1).Count);
-
-
-
-
         }
 
         /// <summary>
@@ -398,7 +396,6 @@ namespace HEIE
             Console.WriteLine(string.Join("\t", a));
             // ArrayList的打印
             Console.WriteLine("ArrayList的打印");
-
         }
 
         /// <summary>
@@ -415,12 +412,11 @@ namespace HEIE
             Console.WriteLine(hashtable[1].GetType());
             foreach (DictionaryEntry item in hashtable)
             {
-
                 Console.WriteLine(item);
                 Console.WriteLine(item.Key);
                 Console.WriteLine(item.Value);
                 /*
-                 
+
                  System.Collections.DictionaryEntry
                  5
                  5值
@@ -505,11 +501,72 @@ namespace HEIE
             {
                 Console.WriteLine($"key:{item.Key}\tvalue:{item.Value}");
             }
-
         }
 
+        /// <summary>
+        /// 获取对象的属性和值
+        /// </summary>
+        /// <param name="obj"> 对象 </param>
+        /// <returns> 返回属性与值一一对应的字典 </returns>
+        public static Dictionary<string, string> GetPropertyValue<T>(T obj)
+        {
+            if (obj != null)
+            {
+                Dictionary<string, string> propertyValue = new Dictionary<string, string>();
+                Type type = obj.GetType();
+                PropertyInfo[] propertyInfos = type.GetProperties();
 
+                foreach (PropertyInfo item in propertyInfos)
+                {
+                    propertyValue.Add(item.Name, (item.GetValue(obj, null) == null ? "" : item.GetValue(obj, null)).ToString());
+                }
 
+                return propertyValue;
+            }
+            return null;
+        }
 
+        /// <summary>
+        /// Json
+        /// </summary>
+        internal void TestJson()
+        {
+            BookA bookA = new BookA()
+            {
+                Author = "Amy",
+                OutCompany = "123",
+                Name = "a"
+            };
+            JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
+            {
+                // 整齐打印
+                WriteIndented = true,
+                // 忽略值为Null的属性
+                IgnoreNullValues = true,
+
+                #region 设置字符集
+
+                // 设置Json字符串支持的编码，默认情况下，序列化程序会转义所有非 ASCII 字符。 即，会将它们替换为 \uxxxx，其中 xxxx 为字符的 Unicode
+                // 代码。 可以通过设置Encoder来让生成的josn字符串不转义指定的字符集而进行序列化 下面指定了基础拉丁字母和中日韩统一表意文字的基础Unicode 块
+                // (U+4E00-U+9FCC)。 基本涵盖了除使用西里尔字母以外所有西方国家的文字和亚洲中日韩越的文字
+
+                #endregion 设置字符集
+
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+            };
+
+            string jsonBookA = JsonSerializer.Serialize(bookA, jsonSerializerOptions);
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.WriteLine(jsonBookA);
+            // 反序列化
+            BookA bookA1 = JsonSerializer.Deserialize<BookA>(jsonBookA);
+            Console.WriteLine(bookA1);
+            Console.WriteLine(bookA1.Name);
+            Dictionary<string, string> dictionary = GetPropertyValue(bookA1);
+            foreach (var item in dictionary)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}");
+            }
+        }
     }
 }
