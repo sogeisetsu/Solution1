@@ -12,11 +12,53 @@ namespace HEIE
 {
     public delegate void WTuo();
 
+    /// <summary>
+    /// 为string类型增加拓展方法
+    /// </summary>
+    internal static class stringExtensions
+    {
+        /// <summary>
+        /// 将string类型转为arrarylist，并且在结尾加上一个整数a
+        /// </summary>
+        /// <param name="str"> 要被操作的字符串 </param>
+        /// <param name="a"> 需要加在结尾的整数 </param>
+        /// <returns> arrayList集合 </returns>
+        internal static ArrayList GetArrayList(this string str, int a)
+        {
+            string[] strings = new string[str.Length + 1];
+            for (int i = 0; i < str.Length; i++)
+            {
+                strings[i] = str.Substring(i, 1);
+            }
+            strings[str.Length] = a.ToString();
+            ArrayList arrayList = new(strings);
+            return arrayList;
+        }
+
+        /// <summary>
+        /// demo，试图获取string实例化对象长度的两倍
+        /// </summary>
+        /// <param name="str"> 此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。 </param>
+        /// <returns> 原来长度的两倍 </returns>
+        internal static int GetTheDoubleLength(this string str)
+        {
+            return str.Length * 2;
+        }
+    }
+
     internal class BookA
     {
         private string _author;
 
         private string _outCompany;
+
+        private DateTime _time = DateTime.Now;
+
+        /// <summary>
+        /// 时间戳
+        /// </summary>
+        [JsonInclude]
+        public long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
 
         public BookA()
         {
@@ -36,6 +78,15 @@ namespace HEIE
         }
 
         /// <summary>
+        /// 析构函数（终结器）
+        /// </summary>
+        ~BookA()
+        {
+            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            Console.WriteLine("终结器\t在整个程序结束的时候运行");
+        }
+
+        /// <summary>
         /// 作者
         /// </summary>
         [JsonPropertyName("作者")]
@@ -48,25 +99,44 @@ namespace HEIE
         /// <summary>
         /// 书的出版商
         /// </summary>
+        [JsonIgnore]
         public string OutCompany { get => _outCompany; set => _outCompany = value; }
+
+        /// <summary>
+        /// 出版时间
+        /// </summary>
+        public DateTime Time
+        {
+            get { return _time; }
+            set { _time = value; }
+        }
 
         /// <summary>
         /// 书的名称
         /// </summary>
-        internal string Name { get; set; } = "《书名》";
+        [JsonInclude]
+        public string Name { private get; set; } = "《书名》";
 
         /// <summary>
         /// 书的价格
         /// </summary>
         internal int Peices { get; init; } = 0;
 
+        public Dictionary<string, int> Details { get; set; } = new Dictionary<string, int>() {
+            {"FirstName",1 },
+            { "Sex",2}
+        };
+
         /// <summary>
-        /// 析构函数（终结器）
+        /// 储存反序列化时候的溢出数据
         /// </summary>
-        ~BookA()
+        [JsonExtensionData]
+        public Dictionary<string, JsonElement> ExtensionData { get; set; }
+
+
+        public override string ToString()
         {
-            Console.WriteLine(MethodBase.GetCurrentMethod().DeclaringType.FullName);
-            Console.WriteLine("终结器\t在整个程序结束的时候运行");
+            return $"Name:{this.Name}\tPrices:{this.Peices}\t出版时间:{this.Time}";
         }
 
         /// <summary>
@@ -111,88 +181,52 @@ namespace HEIE
         }
     }
 
-    /// <summary>
-    /// 为string类型增加拓展方法
-    /// </summary>
-    internal static class stringExtensions
-    {
-        /// <summary>
-        /// demo，试图获取string实例化对象长度的两倍
-        /// </summary>
-        /// <param name="str"> 此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。 </param>
-        /// <returns> 原来长度的两倍 </returns>
-        internal static int GetTheDoubleLength(this string str)
-        {
-            return str.Length * 2;
-        }
-
-        /// <summary>
-        /// 将string类型转为arrarylist，并且在结尾加上一个整数a
-        /// </summary>
-        /// <param name="str"> 要被操作的字符串 </param>
-        /// <param name="a"> 需要加在结尾的整数 </param>
-        /// <returns> arrayList集合 </returns>
-        internal static ArrayList GetArrayList(this string str, int a)
-        {
-            string[] strings = new string[str.Length + 1];
-            for (int i = 0; i < str.Length; i++)
-            {
-                strings[i] = str.Substring(i, 1);
-            }
-            strings[str.Length] = a.ToString();
-            ArrayList arrayList = new(strings);
-            return arrayList;
-        }
-    }
-
     internal class TestA
     {
         /// <summary>
-        /// 混合使用构造器和初始化器
+        /// 获取对象的属性和值
         /// </summary>
-        internal void One()
+        /// <param name="obj"> 对象 </param>
+        /// <returns> 返回属性与值一一对应的字典 </returns>
+        public static Dictionary<string, string> GetPropertyValue<T>(T obj)
         {
-            // TODO 混合使用构造器和初始化器
-            BookA book = new BookA("《123》", 12)
+            if (obj != null)
             {
-                Author = "ASir"
+                Dictionary<string, string> propertyValue = new Dictionary<string, string>();
+                Type type = obj.GetType();
+                PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public);
+
+                foreach (PropertyInfo item in propertyInfos)
+                {
+                    propertyValue.Add(item.Name, (item.GetValue(obj, null) == null ? "" : item.GetValue(obj, null)).ToString());
+                }
+
+                return propertyValue;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 集合类型的转换
+        /// </summary>
+        internal void Eight()
+        {
+            Hashtable hashtable = new Hashtable() {
+                { 1,1},
+                { 2,2}
             };
-
-            Console.WriteLine(book);
-        }
-
-        /// <summary>
-        /// 常规方法实例化对象和调用方法
-        /// </summary>
-        internal void Two()
-        {
-            //实例化对象
-            DefaultFun defaultFun = new DefaultFun();
-            //调用实例化对象的方法
-            defaultFun.ChangeName("新的Name");
-        }
-
-        /// <summary>
-        /// 调用无参拓展方法
-        /// </summary>
-        internal void Three()
-        {
-            var str = "1234";
-            //在使用的时候直接调用就行，直接在实例化对象后面接方法名就行，不用带拓展方法所属于的静态类名
-            int v = str.GetTheDoubleLength();
-            Console.WriteLine(v);
-        }
-
-        /// <summary>
-        /// 调用有参拓展方法
-        /// </summary>
-        internal void Four()
-        {
-            var str = "你好世界";
-            ArrayList arrayList = str.GetArrayList(12);
-            foreach (var item in arrayList)
+            // hashtable 转 Dict
+            Dictionary<int, int> dictionary = new Dictionary<int, int>();
+            foreach (DictionaryEntry item in hashtable)
             {
-                Console.WriteLine($"{item.GetType()}\t{item}");
+                dictionary.Add((int)item.Key, (int)item.Value);
+            }
+            // Dict转Hashtable
+            Hashtable hashtable1 = new Hashtable(dictionary);
+
+            foreach (var item in dictionary)
+            {
+                Console.WriteLine($"key:{item.Key}\tvalue:{item.Value}");
             }
         }
 
@@ -347,55 +381,30 @@ namespace HEIE
         }
 
         /// <summary>
-        /// 测试arrary，arrarylist、list之间的转换
+        /// 调用有参拓展方法
         /// </summary>
-        internal void SixDifference()
+        internal void Four()
         {
-            // 声明数组
-            int[] a = new int[] { 1, 3, 4, 5, 656, -1 };
+            var str = "你好世界";
+            ArrayList arrayList = str.GetArrayList(12);
+            foreach (var item in arrayList)
+            {
+                Console.WriteLine($"{item.GetType()}\t{item}");
+            }
+        }
 
-            // 声明多维数组
-            int[,] aD = new int[,] { { 1, 2 }, { 3, 4 } };
-            // 声明交错数组
-            int[][] aJ = new int[][] {
-                new int[]{ 1,2,3},
-                new int[]{ 1}
+        /// <summary>
+        /// 混合使用构造器和初始化器
+        /// </summary>
+        internal void One()
+        {
+            // TODO 混合使用构造器和初始化器
+            BookA book = new BookA("《123》", 12)
+            {
+                Author = "ASir"
             };
-            // 声明ArrayList
-            ArrayList b = new ArrayList() { 1, 2, 344, "233", true };
-            Console.WriteLine(b[3].GetType()); //System.String
-            // 声明List<T>
-            List<int> c = new List<int>();
 
-            // 数组转ArrayList
-            ArrayList aToArrayList = new ArrayList(a);
-            // 数组转List<T>
-            List<int> aToList = new List<int>(a);
-            List<int> aToLista = a.ToList();
-            // List<T>转数组
-            int[] cToList = c.ToArray();
-            // List<T>转ArrayList
-            ArrayList cToArrayList = new ArrayList(c);
-            // ArrayList转Array
-            object[] bToArray = b.ToArray();
-            // 数组的打印
-            Console.WriteLine("数组的打印");
-            // 调用Array.ForEach
-            Array.ForEach(a, item => Console.WriteLine(item));
-            // 传统forEach
-            foreach (var item in a)
-            {
-                Console.WriteLine(item);
-            }
-            // 传统for
-            for (int i = 0; i < a.Count(); i++)
-            {
-                Console.WriteLine(a[i]);
-            }
-            // string.Join
-            Console.WriteLine(string.Join("\t", a));
-            // ArrayList的打印
-            Console.WriteLine("ArrayList的打印");
+            Console.WriteLine(book);
         }
 
         /// <summary>
@@ -480,50 +489,55 @@ namespace HEIE
         }
 
         /// <summary>
-        /// 集合类型的转换
+        /// 测试arrary，arrarylist、list之间的转换
         /// </summary>
-        internal void Eight()
+        internal void SixDifference()
         {
-            Hashtable hashtable = new Hashtable() {
-                { 1,1},
-                { 2,2}
+            // 声明数组
+            int[] a = new int[] { 1, 3, 4, 5, 656, -1 };
+
+            // 声明多维数组
+            int[,] aD = new int[,] { { 1, 2 }, { 3, 4 } };
+            // 声明交错数组
+            int[][] aJ = new int[][] {
+                new int[]{ 1,2,3},
+                new int[]{ 1}
             };
-            // hashtable 转 Dict
-            Dictionary<int, int> dictionary = new Dictionary<int, int>();
-            foreach (DictionaryEntry item in hashtable)
+            // 声明ArrayList
+            ArrayList b = new ArrayList() { 1, 2, 344, "233", true };
+            Console.WriteLine(b[3].GetType()); //System.String
+            // 声明List<T>
+            List<int> c = new List<int>();
+
+            // 数组转ArrayList
+            ArrayList aToArrayList = new ArrayList(a);
+            // 数组转List<T>
+            List<int> aToList = new List<int>(a);
+            List<int> aToLista = a.ToList();
+            // List<T>转数组
+            int[] cToList = c.ToArray();
+            // List<T>转ArrayList
+            ArrayList cToArrayList = new ArrayList(c);
+            // ArrayList转Array
+            object[] bToArray = b.ToArray();
+            // 数组的打印
+            Console.WriteLine("数组的打印");
+            // 调用Array.ForEach
+            Array.ForEach(a, item => Console.WriteLine(item));
+            // 传统forEach
+            foreach (var item in a)
             {
-                dictionary.Add((int)item.Key, (int)item.Value);
+                Console.WriteLine(item);
             }
-            // Dict转Hashtable
-            Hashtable hashtable1 = new Hashtable(dictionary);
-
-            foreach (var item in dictionary)
+            // 传统for
+            for (int i = 0; i < a.Count(); i++)
             {
-                Console.WriteLine($"key:{item.Key}\tvalue:{item.Value}");
+                Console.WriteLine(a[i]);
             }
-        }
-
-        /// <summary>
-        /// 获取对象的属性和值
-        /// </summary>
-        /// <param name="obj"> 对象 </param>
-        /// <returns> 返回属性与值一一对应的字典 </returns>
-        public static Dictionary<string, string> GetPropertyValue<T>(T obj)
-        {
-            if (obj != null)
-            {
-                Dictionary<string, string> propertyValue = new Dictionary<string, string>();
-                Type type = obj.GetType();
-                PropertyInfo[] propertyInfos = type.GetProperties();
-
-                foreach (PropertyInfo item in propertyInfos)
-                {
-                    propertyValue.Add(item.Name, (item.GetValue(obj, null) == null ? "" : item.GetValue(obj, null)).ToString());
-                }
-
-                return propertyValue;
-            }
-            return null;
+            // string.Join
+            Console.WriteLine(string.Join("\t", a));
+            // ArrayList的打印
+            Console.WriteLine("ArrayList的打印");
         }
 
         /// <summary>
@@ -535,8 +549,9 @@ namespace HEIE
             {
                 Author = "Amy",
                 OutCompany = "123",
-                Name = "a"
+
             };
+            // 序列化
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
             {
                 // 整齐打印
@@ -552,21 +567,62 @@ namespace HEIE
 
                 #endregion 设置字符集
 
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs)
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.BasicLatin, UnicodeRanges.CjkUnifiedIdeographs, UnicodeRanges.CjkSymbolsandPunctuation),
+                // 反序列化不区分大小写
+                PropertyNameCaseInsensitive = true,
+                // 驼峰命名
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+
+                // 对字典的键进行驼峰命名
+                DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+                // 序列化的时候忽略null值属性
+                DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+                // 忽略只读属性，因为只读属性只能序列化而不能反序列化，所以在以json为储存数据的介质的时候，序列化只读属性意义不大
+                IgnoreReadOnlyFields = true,
+                // 不允许结尾有逗号的不标准json
+                AllowTrailingCommas = false,
+                // 不允许有注释的不标准json
+                ReadCommentHandling = JsonCommentHandling.Disallow,
+                // 允许在反序列化的时候原本应为数字的字符串（带引号的数字）转为数字
+                NumberHandling = JsonNumberHandling.AllowReadingFromString
+                // 处理循环引用类型，比如Book类里面有一个属性也是Book类
+                //ReferenceHandler = ReferenceHandler.Preserve
             };
 
             string jsonBookA = JsonSerializer.Serialize(bookA, jsonSerializerOptions);
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine(jsonBookA);
             // 反序列化
-            BookA bookA1 = JsonSerializer.Deserialize<BookA>(jsonBookA);
+            BookA bookA1 = JsonSerializer.Deserialize<BookA>(jsonBookA, jsonSerializerOptions);
             Console.WriteLine(bookA1);
-            Console.WriteLine(bookA1.Name);
+            //Console.WriteLine(bookA1.Name);
             Dictionary<string, string> dictionary = GetPropertyValue(bookA1);
             foreach (var item in dictionary)
             {
                 Console.WriteLine($"{item.Key}\t{item.Value}");
             }
+        }
+
+        /// <summary>
+        /// 调用无参拓展方法
+        /// </summary>
+        internal void Three()
+        {
+            var str = "1234";
+            //在使用的时候直接调用就行，直接在实例化对象后面接方法名就行，不用带拓展方法所属于的静态类名
+            int v = str.GetTheDoubleLength();
+            Console.WriteLine(v);
+        }
+
+        /// <summary>
+        /// 常规方法实例化对象和调用方法
+        /// </summary>
+        internal void Two()
+        {
+            //实例化对象
+            DefaultFun defaultFun = new DefaultFun();
+            //调用实例化对象的方法
+            defaultFun.ChangeName("新的Name");
         }
     }
 }
