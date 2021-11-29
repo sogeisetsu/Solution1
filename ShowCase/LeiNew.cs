@@ -127,6 +127,8 @@ namespace HEIE
             { "Sex",2}
         };
 
+        public DefaultFun defaultFun { get; set; } = new DefaultFun();
+
         /// <summary>
         /// 储存反序列化时候的溢出数据
         /// </summary>
@@ -166,7 +168,7 @@ namespace HEIE
     /// </summary>
     internal class DefaultFun
     {
-        internal string Name { get; set; }
+        public string Name { get; set; } = "AMY";
 
         /// <summary>
         /// 可以由实例化对象调用的方法
@@ -575,7 +577,7 @@ namespace HEIE
 
                 // 对字典的键进行驼峰命名
                 DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
-                // 序列化的时候忽略null值属性
+                // 序列化的时候不忽略属性
                 DefaultIgnoreCondition = JsonIgnoreCondition.Never,
                 // 忽略只读属性，因为只读属性只能序列化而不能反序列化，所以在以json为储存数据的介质的时候，序列化只读属性意义不大
                 IgnoreReadOnlyFields = true,
