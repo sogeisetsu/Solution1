@@ -15,7 +15,7 @@ namespace HEIE
     /// <summary>
     /// 为string类型增加拓展方法
     /// </summary>
-    internal static class stringExtensions
+    internal static class StringExtensions
     {
         /// <summary>
         /// 将string类型转为arrarylist，并且在结尾加上一个整数a
@@ -43,6 +43,41 @@ namespace HEIE
         internal static int GetTheDoubleLength(this string str)
         {
             return str.Length * 2;
+        }
+    }
+
+    /// <summary>
+    /// 对json进行操作的拓展方法
+    /// </summary>
+    internal static class JsonDocumentExtensions
+    {
+        /// <summary>
+        /// 将JsonDocument转为格式化过的字符串
+        /// </summary>
+        /// <param name="jsonDocument"> </param>
+        /// <returns> 格式化过的字符串 </returns>
+        internal static string JDFormatToString(this JsonDocument jsonDocument)
+        {
+            return JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            });
+        }
+
+        /// <summary>
+        /// 将json字符串转为格式化过的字符串
+        /// </summary>
+        /// <param name="str"> </param>
+        /// <returns> 格式化过的字符串 </returns>
+        internal static string TOJsonString(this string str)
+        {
+            JsonDocument jsonDocument = JsonDocument.Parse(str);
+            return JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            });
         }
     }
 
@@ -134,7 +169,6 @@ namespace HEIE
         /// </summary>
         [JsonExtensionData]
         public Dictionary<string, JsonElement> ExtensionData { get; set; }
-
 
         public override string ToString()
         {
@@ -551,7 +585,6 @@ namespace HEIE
             {
                 Author = "Amy",
                 OutCompany = "123",
-
             };
             // 序列化
             JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions()
@@ -625,6 +658,30 @@ namespace HEIE
             DefaultFun defaultFun = new DefaultFun();
             //调用实例化对象的方法
             defaultFun.ChangeName("新的Name");
+        }
+
+        internal void FormatJson()
+        {
+            // 先定义一个json字符串
+            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
+            Console.WriteLine(jsonText);
+            // 将表示单个 JSON 字符串值的文本分析为 JsonDocument
+            JsonDocument jsonDocument = JsonDocument.Parse(jsonText);
+            // 序列化
+            string formatJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+            {
+                // 整齐打印
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+            });
+            // 格式化输出
+            Console.WriteLine(formatJson);
+            // jsondocument 格式化输出为json字符串
+            string a = jsonDocument.JDFormatToString();
+            // 格式化字符串
+            string b = jsonText.TOJsonString();
+            Console.WriteLine(a);
+            Console.WriteLine(b);
         }
     }
 }

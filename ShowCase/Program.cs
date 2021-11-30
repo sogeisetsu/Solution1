@@ -85,7 +85,8 @@ namespace ShowCase
             //testA.SixDifference();
             //testA.Seven();
             //testA.Eight();
-            testA.TestJson();
+            //testA.TestJson();
+            testA.FormatJson();
             Console.WriteLine("按下任何键去停止并退出程序");
             Console.ReadKey(true);
         }
