@@ -156,8 +156,8 @@ namespace HEIE
         /// 书的价格
         /// </summary>
         internal int Peices { get; init; } = 0;
-
-        public Dictionary<string, int> Details { get; set; } = new Dictionary<string, int>() {
+        [JsonInclude]
+        public Dictionary<string, int> Details { get; private set; } = new Dictionary<string, int>() {
             {"FirstName",1 },
             { "Sex",2}
         };
@@ -682,6 +682,43 @@ namespace HEIE
             string b = jsonText.TOJsonString();
             Console.WriteLine(a);
             Console.WriteLine(b);
+        }
+
+        /// <summary>
+        /// 运行解答cnblog朋友的疑惑
+        /// </summary>
+        internal void TestCnBlog()
+        {
+            // 实例化对象
+            BookA bookA = new BookA();
+            // details的set为private，有JsonInclude特性来修饰，正常情况下，在类外面只能读，不能写
+            Dictionary<string, int> details = bookA.Details;
+            // 读取并打印details
+            foreach (var item in details)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}");
+            }
+            // 实例化JsonSerializerOptions
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                IgnoreNullValues = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
+            };
+            // 将实例化对象bookA序列成json字符串
+            string bookaJson = JsonSerializer.Serialize(bookA, options);
+            // 里面包含details的各种内容
+            Console.WriteLine(bookaJson);
+            // 将之前序列化之后获得的字符串进行反序列化
+            BookA bookA1 = JsonSerializer.Deserialize<BookA>(bookaJson, options);
+            // 自定义的方法，获取类的所有属性
+            Dictionary<string, string> bookA1Prop = GetPropertyValue<BookA>(bookA1);
+            // private set属性访问器的字典details被成功反序列化
+            foreach (var item in bookA1Prop)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}");
+            }
         }
     }
 }
