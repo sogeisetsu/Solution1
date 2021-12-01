@@ -666,22 +666,62 @@ namespace HEIE
             string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
             Console.WriteLine(jsonText);
             // 将表示单个 JSON 字符串值的文本分析为 JsonDocument
-            JsonDocument jsonDocument = JsonDocument.Parse(jsonText);
-            // 序列化
-            string formatJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
             {
-                // 整齐打印
-                WriteIndented = true,
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
-            });
-            // 格式化输出
-            Console.WriteLine(formatJson);
-            // jsondocument 格式化输出为json字符串
-            string a = jsonDocument.JDFormatToString();
-            // 格式化字符串
-            string b = jsonText.TOJsonString();
-            Console.WriteLine(a);
-            Console.WriteLine(b);
+                // 序列化
+                string formatJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+                {
+                    // 整齐打印
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+                });
+                // 格式化输出
+                Console.WriteLine(formatJson);
+                // jsondocument 格式化输出为json字符串
+                string a = jsonDocument.JDFormatToString();
+                // 格式化字符串
+                string b = jsonText.TOJsonString();
+                Console.WriteLine(a);
+                Console.WriteLine(b);
+            }
+
+        }
+
+        internal void FormatJson2()
+        {
+            Console.WriteLine("对json字符串进行dom操作");
+            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
+            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
+            {
+                JsonElement root = jsonDocument.RootElement;
+                JsonElement students = root.GetProperty("Students");
+                JsonElement semester = root.GetProperty("Semester");
+                // 获取json的值类型
+                Console.WriteLine(semester.ValueKind);
+                Console.WriteLine(semester);
+                // 检测json的值类型
+                Console.WriteLine(students.ValueKind == JsonValueKind.Array);
+                Console.WriteLine(semester.GetString());
+
+                // 获取数组长度
+                Console.WriteLine(students.GetArrayLength());
+                // EnumerateArray 一个枚举器，它用于枚举由该 JsonElement 表示的 JSON 数组中的值。
+                foreach (JsonElement student in students.EnumerateArray())
+                {
+
+                    Console.WriteLine(student);
+                    Console.WriteLine(student.ValueKind);// object
+                    // 获取属性Name的string值
+                    Console.WriteLine(student.GetProperty("Name").GetString());
+                    //Console.WriteLine(student.GetProperty("Grade").GetDouble());
+                }
+                Console.WriteLine("关于搜索不好的示范");
+                Console.WriteLine(students[1]);
+                Console.WriteLine("示范结束");
+                Console.WriteLine(root.TryGetProperty("Semester", out JsonElement value));
+                Console.WriteLine(value.GetString());
+            }
+
         }
 
         /// <summary>
