@@ -8,14 +8,15 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
-namespace HEIE
+
+namespace ConsoleApp1
 {
     public delegate void WTuo();
 
     /// <summary>
     /// 为string类型增加拓展方法
     /// </summary>
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// 将string类型转为arrarylist，并且在结尾加上一个整数a
@@ -49,7 +50,7 @@ namespace HEIE
     /// <summary>
     /// 对json进行操作的拓展方法
     /// </summary>
-    internal static class JsonDocumentExtensions
+    public static class JsonDocumentExtensions
     {
         /// <summary>
         /// 将JsonDocument转为格式化过的字符串
@@ -85,7 +86,7 @@ namespace HEIE
     /// <summary>
     /// 用于测试的类
     /// </summary>
-    internal class BookA
+    public class BookA
     {
         private string _author;
 
@@ -205,7 +206,7 @@ namespace HEIE
     /// <summary>
     /// 常规意义上为实例化对象准备方法
     /// </summary>
-    internal class DefaultFun
+    public class DefaultFun
     {
 
         public string Name { get; set; } = "AMY";
@@ -223,7 +224,7 @@ namespace HEIE
         }
     }
 
-    internal class TestA
+    public class TestA
     {
         /// <summary>
         /// 获取对象的属性和值
