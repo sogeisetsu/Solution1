@@ -1,18 +1,30 @@
 {
   "homepages": [],
-  "source_base_path": "C:/Users/苏月晟/source/repos/Solution1/ConsoleApp1",
+  "source_base_path": "C:/Users/苏月晟/Desktop/docfx_project",
   "xrefmap": "xrefmap.yml",
   "files": [
+    {
+      "type": "Toc",
+      "source_relative_path": "anycombine/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "anycombine/toc.html",
+          "hash": "53VNZLDyEbcxYluoaJbwCSukOeQeJOvdybPnXieb6zI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
     {
       "type": "ManagedReference",
       "source_relative_path": "api/ConsoleApp1.BookA.yml",
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.BookA.html",
-          "hash": "AV0a4b6cSgikTouLNoAks9AAxgwBIRWjmhqSXrumwn8="
+          "hash": "P+Pbn/nqhWsxVLAFKeQMLj5EeWIJYVtbOJ/WyEArGAE="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -21,10 +33,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.DefaultFun.html",
-          "hash": "xLZU6OXOQPaqiK+kW/qNIGNLnw6sm4259FF9MRUTsRo="
+          "hash": "0CqiDXIo9biD+lRuBB2VjbL3OkVAhV9jM8LyBF0ZDgc="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -33,10 +45,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.JsonDocumentExtensions.html",
-          "hash": "NJR0LgrMWG38ffzg68SaFTeIk6wL0aBYrscUMgvzjmA="
+          "hash": "QeA9w/T19cICo27Q8bewv4+W9S3E5J8W0hWvsrnrmTo="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -45,10 +57,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.StringExtensions.html",
-          "hash": "//3jpR+K8TYfXxAdXr93O9psmrV2W0yB29vuCnFui6M="
+          "hash": "YJsIk1aj4is3QHYQZ7t5FuxXk40UhCdKO/vu8C4HkDQ="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -57,10 +69,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.TestA.html",
-          "hash": "IU8loCTzUMHpbHWh/7fhFCHgM3BdBGQ/Cy5CF8/5UF4="
+          "hash": "S1sfJ/hga654wnLj0P0d3vCKl5EgQBUGcqc+T+8FYBQ="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -69,10 +81,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.WTuo.html",
-          "hash": "pPjrMcdveSMYP+snPrgHWLG0RbHERjL0c2EH0WMITQ0="
+          "hash": "eeUB08gQ0hcp7j/L3MhxlSg++4Zr2EmNVCjHm7JL/Gg="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -81,10 +93,10 @@
       "output": {
         ".html": {
           "relative_path": "api/ConsoleApp1.html",
-          "hash": "TFMtZm2nqmcIvPbH4pPOXE7PTCCKiB0TEyXgJ9TGti0="
+          "hash": "aFyTT4b/jeAUlynMWmFlAJnYHmdM//4NpKX+Py0dOFo="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -93,10 +105,10 @@
       "output": {
         ".html": {
           "relative_path": "api/index.html",
-          "hash": "Fsnls7JiKu7fNllDfNYAO+ZGlXlnwjuoXxtQcfnEHr8="
+          "hash": "Z2tN4H0tV294si2Dw+tGS+4GiOcr8nZuEYlcy+Hdpbc="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -105,7 +117,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "X3qi65qG8g6+32p5zE6JcujJ7yqecB50DKzO/HC/i44="
+          "hash": "UvhJAWkzC8aFdynTETrKgOqkvcnWjXBf8+EJ8ASnjLQ="
         }
       },
       "is_incremental": false,
@@ -117,19 +129,283 @@
       "output": {
         ".html": {
           "relative_path": "articles/intro.html",
-          "hash": "J16tPljbCW5UQZHXkCSKEgj/ndCORtU7lIyC3KiEN9I="
+          "hash": "BInuyX6RahWAfOyJsQDRzsGOTsEAV+1rmWzu+UxpM2E="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
-      "type": "Toc",
-      "source_relative_path": "articles/toc.yml",
+      "type": "Conceptual",
+      "source_relative_path": "articles/演练.md",
       "output": {
         ".html": {
-          "relative_path": "articles/toc.html",
-          "hash": "BlPxk5mtl2kgfcZUgkEguqiSAR/EUyUTT4EdebwkQvs="
+          "relative_path": "articles/演练.html",
+          "hash": "EhnqdCkzDVo/X/Rbe53b51xStoYn2/RfpBi5KeVq6Dc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/进阶.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/进阶.html",
+          "hash": "ZI5s6DLtYVnSOPcikJZ+QHLtkd8wp3VnhUJw8vj9G6A="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/GIT 的merge、rebase和cherry-pick.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/GIT 的merge、rebase和cherry-pick.html",
+          "hash": "3cPCUPXpjiod0YDi5inVrpOBTQc4LVkaNxu4o1p8OVo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/Google Fonts注意事项.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/Google Fonts注意事项.html",
+          "hash": "cpAL3vjaqw545Ut7msZGh0jkWPbfmgFem0AnTxGp/dQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/Linux笔记.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/Linux笔记.html",
+          "hash": "cj4nwq9A2+IyWBKozXsohYiWBGCdCmWRN+B8T5V0wvY="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/issue trans Problem Description.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/issue trans Problem Description.html",
+          "hash": "jU7/wPLSkI8A8YyySk27ZE3Lsp1z0k7JHIF2QPrfZoU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/python 包（package）和模块（module）的创建和引入（import）.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/python 包（package）和模块（module）的创建和引入（import）.html",
+          "hash": "ErPwhvzWxDm1c9fY593Z6zlXv1WXZxhKiSB3b5ehU6M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/unix bsd linux shell bash GNU之间的联系，歪讲Linux(一).md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/unix bsd linux shell bash GNU之间的联系，歪讲Linux(一).html",
+          "hash": "VS7IgHiGvELJhBgnhIg+TPNkNP7rLEiHyqPnkcAJCK4="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/vscode git 无需命令行.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/vscode git 无需命令行.html",
+          "hash": "e8nAalsveftUEUOtbnsT7wjWX0EYczNYivPAGjlZpD0="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/一.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/一.html",
+          "hash": "h9ut7oek0pgm8sRV5mtk34zZ0LTSuiz8QpvZXhhFhQg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/关于若干问题的解释说明.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/关于若干问题的解释说明.html",
+          "hash": "drJoARrRrywb5FQpJRgcvIoeNXFpnppwqg2QiCtoA5M="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/商品上架格式.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/商品上架格式.html",
+          "hash": "6dnnu+jbXt9d1ghRC3/vrOAczEmDsBudEgwRlLGmNEg="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/如何在印刷品中使用遵循SIL Open Font License协议的字体.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/如何在印刷品中使用遵循SIL Open Font License协议的字体.html",
+          "hash": "PIfLA+DrLZ8S2Lv//2qzUYjiu9mCGeBSH2AtMlsNvWE="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/对微信支付文档的自我理解.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/对微信支付文档的自我理解.html",
+          "hash": "Z8jMuxGTEP0rETo+Cd0gpBSyMCNXUywM42McKxh25Zo="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/我的python加密方案.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/我的python加密方案.html",
+          "hash": "kgHfSaCWnCZb45fqmck6dorodxeirXvtVvJ7VBMgcjQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/找人.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/找人.html",
+          "hash": "YUDvIoA8lAfJoam5Ci3gqGnjW03/yOQjxKYkEz4c1KI="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/日语 时间的量.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/日语 时间的量.html",
+          "hash": "WKxxqYpjy0WIDGdQl5ONO3+wYYpSOBy8aFrf+Jo0ZKc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/日语学习资源的分享.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/日语学习资源的分享.html",
+          "hash": "+dybTempJ7gnhIJtjjKBqyLGXMWT+k+0zhP6iMSC+hc="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/说明.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/说明.html",
+          "hash": "AQyTpQItEITGkQ4P79i1lYzyuvEJvdTBzgGm96cfyrQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/贝多芬小传.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/贝多芬小传.html",
+          "hash": "f2qG5IMgKUSDfmQHJ4sC2SYhTyrADNh/By4aEnhnwYU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/还没有学会告别，就已经后会无期。.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/还没有学会告别，就已经后会无期。.html",
+          "hash": "OO50tOqPuTlST0/TbikuLV9bIwU4iebg1nv1qvpDYXQ="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/雷电接口.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/雷电接口.html",
+          "hash": "SuF9+Vr6O0OaA0zFFWa2X8SbOfpOYwX5XeXLV6l4leU="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "blog/青岛科技大学新生报考参考.md",
+      "output": {
+        ".html": {
+          "relative_path": "blog/青岛科技大学新生报考参考.html",
+          "hash": "Ogd8sLS3PjCPhyZivfSfmCVoiMQkomdsjqbHy7rENpU="
         }
       },
       "is_incremental": false,
@@ -141,10 +417,10 @@
       "output": {
         ".html": {
           "relative_path": "index.html",
-          "hash": "1yxUXNNDa4gIzbXwZEyUZPt5S0KG3EB0RNY8tx60ddU="
+          "hash": "iUoLsAnkbdYkbz+L9ULWr8aw75xu+lnVzO9Ax36egA8="
         }
       },
-      "is_incremental": true,
+      "is_incremental": false,
       "version": ""
     },
     {
@@ -153,7 +429,7 @@
       "output": {
         ".html": {
           "relative_path": "toc.html",
-          "hash": "UeBT0rORyCPjlLrGfk355Y/r09Otd8lssWvIpRP2WLs="
+          "hash": "teUD0+jGFMXGuAOq2hnOGdvbWVhbCh4hU6D2oJR1Q5o="
         }
       },
       "is_incremental": false,
@@ -163,23 +439,25 @@
   "incremental_info": [
     {
       "status": {
-        "can_incremental": true,
+        "can_incremental": false,
+        "details": "Cannot build incrementally because config changed.",
         "incrementalPhase": "build",
         "total_file_count": 0,
-        "skipped_file_count": 0
+        "skipped_file_count": 0,
+        "full_build_reason_code": "ConfigChanged"
       },
       "processors": {
         "ConceptualDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 3,
-          "skipped_file_count": 3
+          "total_file_count": 26,
+          "skipped_file_count": 0
         },
         "ManagedReferenceDocumentProcessor": {
-          "can_incremental": true,
+          "can_incremental": false,
           "incrementalPhase": "build",
           "total_file_count": 7,
-          "skipped_file_count": 7
+          "skipped_file_count": 0
         },
         "TocDocumentProcessor": {
           "can_incremental": false,

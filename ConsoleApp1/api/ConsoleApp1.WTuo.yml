@@ -1,0 +1,36 @@
+### YamlMime:ManagedReference
+items:
+- uid: ConsoleApp1.WTuo
+  commentId: T:ConsoleApp1.WTuo
+  id: WTuo
+  parent: ConsoleApp1
+  children: []
+  langs:
+  - csharp
+  - vb
+  name: WTuo
+  nameWithType: WTuo
+  fullName: ConsoleApp1.WTuo
+  type: Delegate
+  source:
+    id: WTuo
+    path: C:\Users\苏月晟\source\repos\Solution1\ConsoleApp1\newLei.cs
+    startLine: 12
+  assemblies:
+  - ConsoleApp1
+  namespace: ConsoleApp1
+  syntax:
+    content: public delegate void WTuo();
+    content.vb: Public Delegate Sub WTuo
+  modifiers.csharp:
+  - public
+  - delegate
+  modifiers.vb:
+  - Public
+  - Delegate
+references:
+- uid: ConsoleApp1
+  commentId: N:ConsoleApp1
+  name: ConsoleApp1
+  nameWithType: ConsoleApp1
+  fullName: ConsoleApp1

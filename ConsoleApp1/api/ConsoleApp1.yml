@@ -1,0 +1,58 @@
+### YamlMime:ManagedReference
+items:
+- uid: ConsoleApp1
+  commentId: N:ConsoleApp1
+  id: ConsoleApp1
+  children:
+  - ConsoleApp1.BookA
+  - ConsoleApp1.DefaultFun
+  - ConsoleApp1.JsonDocumentExtensions
+  - ConsoleApp1.StringExtensions
+  - ConsoleApp1.TestA
+  - ConsoleApp1.WTuo
+  langs:
+  - csharp
+  - vb
+  name: ConsoleApp1
+  nameWithType: ConsoleApp1
+  fullName: ConsoleApp1
+  type: Namespace
+  assemblies:
+  - ConsoleApp1
+references:
+- uid: ConsoleApp1.WTuo
+  commentId: T:ConsoleApp1.WTuo
+  name: WTuo
+  nameWithType: WTuo
+  fullName: ConsoleApp1.WTuo
+- uid: ConsoleApp1.StringExtensions
+  commentId: T:ConsoleApp1.StringExtensions
+  name: StringExtensions
+  nameWithType: StringExtensions
+  fullName: ConsoleApp1.StringExtensions
+- uid: ConsoleApp1.JsonDocumentExtensions
+  commentId: T:ConsoleApp1.JsonDocumentExtensions
+  name: JsonDocumentExtensions
+  nameWithType: JsonDocumentExtensions
+  fullName: ConsoleApp1.JsonDocumentExtensions
+- uid: ConsoleApp1.BookA
+  commentId: T:ConsoleApp1.BookA
+  name: BookA
+  nameWithType: BookA
+  fullName: ConsoleApp1.BookA
+- uid: ConsoleApp1.DefaultFun
+  commentId: T:ConsoleApp1.DefaultFun
+  parent: ConsoleApp1
+  name: DefaultFun
+  nameWithType: DefaultFun
+  fullName: ConsoleApp1.DefaultFun
+- uid: ConsoleApp1.TestA
+  commentId: T:ConsoleApp1.TestA
+  name: TestA
+  nameWithType: TestA
+  fullName: ConsoleApp1.TestA
+- uid: ConsoleApp1
+  commentId: N:ConsoleApp1
+  name: ConsoleApp1
+  nameWithType: ConsoleApp1
+  fullName: ConsoleApp1
