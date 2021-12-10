@@ -8,7 +8,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.Unicode;
 
-
 namespace ConsoleApp1
 {
     public delegate void WTuo();
@@ -83,6 +82,7 @@ namespace ConsoleApp1
             }
         }
     }
+
     /// <summary>
     /// 用于测试的类
     /// </summary>
@@ -208,7 +208,6 @@ namespace ConsoleApp1
     /// </summary>
     public class DefaultFun
     {
-
         public string Name { get; set; } = "AMY";
 
         /// <summary>
