@@ -12,7 +12,7 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Hello World!");
             TestA testA = new();
-            testA.FormatJson2();
+            testA.BaseAndPai();
         }
     }
 }

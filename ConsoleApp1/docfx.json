@@ -53,7 +53,8 @@
     "globalMetadataFiles": [],
     "fileMetadataFiles": [],
     "template": [
-      "default"
+      "default", 
+      "default(zh-cn)"
     ],
     "postProcessors": [],
     "markdownEngineName": "markdig",

@@ -13,40 +13,6 @@ namespace ConsoleApp1
     public delegate void WTuo();
 
     /// <summary>
-    /// 为string类型增加拓展方法
-    /// </summary>
-    public static class StringExtensions
-    {
-        /// <summary>
-        /// 将string类型转为arrarylist，并且在结尾加上一个整数a
-        /// </summary>
-        /// <param name="str"> 要被操作的字符串 </param>
-        /// <param name="a"> 需要加在结尾的整数 </param>
-        /// <returns> arrayList集合 </returns>
-        internal static ArrayList GetArrayList(this string str, int a)
-        {
-            string[] strings = new string[str.Length + 1];
-            for (int i = 0; i < str.Length; i++)
-            {
-                strings[i] = str.Substring(i, 1);
-            }
-            strings[str.Length] = a.ToString();
-            ArrayList arrayList = new(strings);
-            return arrayList;
-        }
-
-        /// <summary>
-        /// demo，试图获取string实例化对象长度的两倍
-        /// </summary>
-        /// <param name="str"> 此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。 </param>
-        /// <returns> 原来长度的两倍 </returns>
-        internal static int GetTheDoubleLength(this string str)
-        {
-            return str.Length * 2;
-        }
-    }
-
-    /// <summary>
     /// 对json进行操作的拓展方法
     /// </summary>
     public static class JsonDocumentExtensions
@@ -84,21 +50,55 @@ namespace ConsoleApp1
     }
 
     /// <summary>
+    /// 为string类型增加拓展方法
+    /// </summary>
+    public static class StringExtensions
+    {
+        /// <summary>
+        /// 将string类型转为arrarylist，并且在结尾加上一个整数a
+        /// </summary>
+        /// <param name="str"> 要被操作的字符串 </param>
+        /// <param name="a"> 需要加在结尾的整数 </param>
+        /// <returns> arrayList集合 </returns>
+        internal static ArrayList GetArrayList(this string str, int a)
+        {
+            string[] strings = new string[str.Length + 1];
+            for (int i = 0; i < str.Length; i++)
+            {
+                strings[i] = str.Substring(i, 1);
+            }
+            strings[str.Length] = a.ToString();
+            ArrayList arrayList = new(strings);
+            return arrayList;
+        }
+
+        /// <summary>
+        /// demo，试图获取string实例化对象长度的两倍
+        /// </summary>
+        /// <param name="str"> 此方法的第一个参数指定方法所操作的类型；此参数前面必须加上 this 修饰符。 </param>
+        /// <returns> 原来长度的两倍 </returns>
+        internal static int GetTheDoubleLength(this string str)
+        {
+            return str.Length * 2;
+        }
+    }
+
+    /// <summary>
     /// 用于测试的类
     /// </summary>
     public class BookA
     {
-        private string _author;
-
-        private string _outCompany;
-
-        private DateTime _time = DateTime.Now;
-
         /// <summary>
         /// 时间戳
         /// </summary>
         [JsonInclude]
         public long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+        private string _author;
+
+        private string _outCompany;
+
+        private DateTime _time = DateTime.Now;
 
         public BookA()
         {
@@ -136,6 +136,26 @@ namespace ConsoleApp1
             set { _author = value; }
         }
 
+        public DefaultFun defaultFun { get; set; } = new DefaultFun();
+
+        [JsonInclude]
+        public Dictionary<string, int> Details { get; private set; } = new Dictionary<string, int>() {
+            {"FirstName",1 },
+            { "Sex",2}
+        };
+
+        /// <summary>
+        /// 储存反序列化时候的溢出数据
+        /// </summary>
+        [JsonExtensionData]
+        public Dictionary<string, JsonElement> ExtensionData { get; set; }
+
+        /// <summary>
+        /// 书的名称
+        /// </summary>
+        [JsonInclude]
+        public string Name { private get; set; } = "《书名》";
+
         /// <summary>
         /// 书的出版商
         /// </summary>
@@ -152,29 +172,9 @@ namespace ConsoleApp1
         }
 
         /// <summary>
-        /// 书的名称
-        /// </summary>
-        [JsonInclude]
-        public string Name { private get; set; } = "《书名》";
-
-        /// <summary>
         /// 书的价格
         /// </summary>
         internal int Peices { get; init; } = 0;
-
-        [JsonInclude]
-        public Dictionary<string, int> Details { get; private set; } = new Dictionary<string, int>() {
-            {"FirstName",1 },
-            { "Sex",2}
-        };
-
-        public DefaultFun defaultFun { get; set; } = new DefaultFun();
-
-        /// <summary>
-        /// 储存反序列化时候的溢出数据
-        /// </summary>
-        [JsonExtensionData]
-        public Dictionary<string, JsonElement> ExtensionData { get; set; }
 
         public override string ToString()
         {
@@ -223,6 +223,301 @@ namespace ConsoleApp1
         }
     }
 
+    /// <summary>
+    /// 抽象类，抽象类不能实例化
+    /// </summary>
+    public abstract class Human
+    {
+        private int _age = 1;
+
+        /// <summary>
+        /// 非抽象成员
+        /// </summary>
+        public int Age
+        {
+            get { return _age; }
+            set
+            {
+                if (value > 0)
+                {
+                    this._age = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 抽象属性,不能设定值
+        /// </summary>
+        public abstract string Name { get; set; }
+
+        /// <summary>
+        /// 抽象方法
+        /// </summary>
+        public abstract void AbstrractMethod();
+    }
+
+    /// <summary>
+    /// 基类
+    /// </summary>
+    public class Person
+    {
+        public int _age = 10;
+
+        private string _sex = "man";
+
+        public Person()
+        {
+        }
+
+        public Person(int age, string sex)
+        {
+            Age = age;
+            Sex = sex;
+        }
+
+        /// <summary>
+        /// 年龄
+        /// </summary>
+        public int Age
+        {
+            get { return _age; }
+            set
+            {
+                if (value >= 0)
+                {
+                    _age = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 性别
+        /// </summary>
+        public string Sex
+        {
+            get { return _sex; }
+            set
+            {
+                if (value == "man" | value == "woman")
+                {
+                    _sex = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 此类可以重写,virtual 关键字用于修改方法、属性、索引器或事件声明，并使它们可以在派生类中被重写。
+        /// </summary>
+        /// <param name="name"> 需要被打印的值 </param>
+        public virtual void GetName(string name)
+        {
+            Console.WriteLine($"姓名是{name}");
+        }
+
+        /// <summary>
+        /// 一个可以重写的方法
+        /// </summary>
+        public virtual void ProhibitDerived()
+        {
+            Console.WriteLine($"一个可以重写的方法\t{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 返回Json字符串
+        /// </summary>
+        /// <returns> </returns>
+        public string ToJson()
+        {
+            // this表示对象
+            string json = JsonSerializer.Serialize(this, new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            });
+
+            return json;
+        }
+
+        /// <summary>
+        /// 重写tostring
+        /// </summary>
+        /// <returns> </returns>
+        public override string ToString()
+        {
+            return $"Age\t{this.Age}\nSex\t{this.Sex}";
+        }
+    }
+
+    /// <summary>
+    /// 派生类
+    /// </summary>
+    public class Students : Person
+    {
+        public Students()
+        {
+        }
+
+        /// <summary>
+        /// 调用基类的构造函数
+        /// </summary>
+        /// <param name="age"> 年龄 </param>
+        /// <param name="sex"> 性别 </param>
+        public Students(int age, string sex) : base(age, sex)
+        {
+        }
+
+        /// <summary>
+        /// 重写基类的方法
+        /// </summary>
+        /// <param name="name"> </param>
+        public override void GetName(string name)
+        {
+            Console.WriteLine(base.Age);
+            base.GetName(name);
+            Console.WriteLine(MethodBase.GetCurrentMethod().Name);
+        }
+
+        /// <summary>
+        /// 禁止派生类重写此“在基类中允许重写”的方法
+        /// </summary>
+        public override sealed void ProhibitDerived()
+        {
+            Console.WriteLine("此方法禁止重写");
+            base.ProhibitDerived();
+        }
+
+        /// <summary>
+        /// 派生类自己的方法
+        /// </summary>
+        public void MyselfMethod()
+        {
+            Console.WriteLine("派生类自己的方法");
+            Console.WriteLine(this._age);
+        }
+    }
+
+    /// <summary>
+    /// 抽象类的派生类，抽象类的派生类必须实现抽象类的所有抽象成员，sealed禁止此类有派生类
+    /// </summary>
+    public sealed class Tom : Human
+    {
+        public Tom()
+        {
+        }
+
+        public Tom(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="name"> 姓名 </param>
+        /// <param name="age"> 年龄 </param>
+        public Tom(string name, int age)
+        {
+            this.Age = age;
+            this.Name = name;
+        }
+
+        public override string Name { get; set; } = "Tom";
+
+        public override void AbstrractMethod()
+        {
+            Console.WriteLine("实现抽象类的抽象方法");
+        }
+    }
+
+    /// <summary>
+    /// 定义一个接口
+    /// </summary>
+    public interface IAllLIfe
+    {
+        /// <summary>
+        /// 接口可以包含静态字段，并可以为其赋值
+        /// </summary>
+        internal static string _school = "济钢高中";
+
+        /// <summary>
+        /// 接口可以包含常量，并可以为其赋值
+        /// </summary>
+        internal const string _Hi = "Hi！";
+
+        /// <summary>
+        /// 接口的属性成员
+        /// </summary>
+        public int Age { get; init; }
+
+        /// <summary>
+        /// 接口的方法成员
+        /// </summary>
+        /// <param name="name"> </param>
+        public void PraiseLife(string name);
+
+        void Hh()
+        {
+            Console.WriteLine("接口的默认实现");
+        }
+
+
+    }
+
+    public class Amy : IAllLIfe
+    {
+        private readonly string _name;
+
+        /// <summary>
+        /// 接口的派生类自己的属性
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+            init { _name = value; }
+        }
+
+        /// <summary>
+        /// 实现接口的属性，不需要override
+        /// </summary>
+        public int Age { get; init; } = 1;
+
+        /// <summary>
+        /// 实现接口的方法
+        /// </summary>
+        /// <param name="name"></param>
+        public void PraiseLife(string name)
+        {
+            Console.WriteLine($"赞美生命{name}");
+        }
+    }
+
+    /// <summary>
+    /// 基类
+    /// </summary>
+    public class ClassA
+    {
+        public int age = 10;
+        private int _score;
+
+        public int Score
+        {
+            get { return _score; }
+            set { _score = value; }
+        }
+
+        public void AMethod()
+        {
+            Console.WriteLine("基类的方法");
+        }
+
+    }
+
+    public class ClassB : ClassA
+    {
+
+    }
+
     public class TestA
     {
         /// <summary>
@@ -246,6 +541,40 @@ namespace ConsoleApp1
                 return propertyValue;
             }
             return null;
+        }
+
+        /// <summary>
+        /// 测试基类和派生类
+        /// </summary>
+        public void BaseAndPai()
+        {
+            // 向上转型，只能调用基类的成员，有助于成员的统一
+            Person students = new Students();
+            students.GetName("Tom");
+            // 向下转型，可以调用子类的特殊方法
+            Students studentsDerived = new Students();
+            studentsDerived.MyselfMethod();
+            // 派生类调用基类的字段
+            Console.WriteLine(studentsDerived._age);
+            // 向下转型，从父类转为子类
+            ((Students)students).MyselfMethod();
+            Human tom = new Tom();
+            Console.WriteLine(tom.Age);
+            IAllLIfe amy = new Amy();
+            // 使用向下转型获取子类的独有属性
+            amy.PraiseLife(((Amy)amy).Name);
+            // call interface's static filed
+            Console.WriteLine(IAllLIfe._school);
+            Console.WriteLine(IAllLIfe._Hi);
+            // 派生类调用接口的默认实现
+            amy.Hh();
+        }
+
+        public void BaseAndPai2()
+        {
+            ClassB classB = new ClassB();
+            // 调用基类的方法
+            classB.AMethod();
         }
 
         /// <summary>
@@ -423,6 +752,73 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// 格式化输出sjon
+        /// </summary>
+        internal void FormatJson()
+        {
+            // 先定义一个json字符串
+            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
+            Console.WriteLine(jsonText);
+            // 将表示单个 JSON 字符串值的文本分析为 JsonDocument
+            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
+            {
+                // 序列化
+                string formatJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
+                {
+                    // 整齐打印
+                    WriteIndented = true,
+                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
+                });
+                // 格式化输出
+                Console.WriteLine(formatJson);
+                // jsondocument 格式化输出为json字符串
+                string a = jsonDocument.JDFormatToString();
+                // 格式化字符串
+                string b = jsonText.TOJsonString();
+                Console.WriteLine(a);
+                Console.WriteLine(b);
+            }
+        }
+
+        /// <summary>
+        /// JsonDocument使用
+        /// </summary>
+        internal void FormatJson2()
+        {
+            Console.WriteLine("对json字符串进行dom操作");
+            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
+            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
+            {
+                JsonElement root = jsonDocument.RootElement;
+                JsonElement students = root.GetProperty("Students");
+                JsonElement semester = root.GetProperty("Semester");
+                // 获取json的值类型
+                Console.WriteLine(semester.ValueKind);
+                Console.WriteLine(semester);
+                // 检测json的值类型
+                Console.WriteLine(students.ValueKind == JsonValueKind.Array);
+                Console.WriteLine(semester.GetString());
+
+                // 获取数组长度
+                Console.WriteLine(students.GetArrayLength());
+                // EnumerateArray 一个枚举器，它用于枚举由该 JsonElement 表示的 JSON 数组中的值。
+                foreach (JsonElement student in students.EnumerateArray())
+                {
+                    Console.WriteLine(student);
+                    Console.WriteLine(student.ValueKind);// object
+                    // 获取属性Name的string值
+                    Console.WriteLine(student.GetProperty("Name").GetString());
+                    //Console.WriteLine(student.GetProperty("Grade").GetDouble());
+                }
+                Console.WriteLine("关于搜索不好的示范");
+                Console.WriteLine(students[1]);
+                Console.WriteLine("示范结束");
+                Console.WriteLine(root.TryGetProperty("Semester", out JsonElement value));
+                Console.WriteLine(value.GetString());
+            }
+        }
+
+        /// <summary>
         /// 调用有参拓展方法
         /// </summary>
         internal void Four()
@@ -583,6 +979,43 @@ namespace ConsoleApp1
         }
 
         /// <summary>
+        /// 运行解答cnblog朋友的疑惑
+        /// </summary>
+        internal void TestCnBlog()
+        {
+            // 实例化对象
+            BookA bookA = new BookA();
+            // details的set为private，有JsonInclude特性来修饰，正常情况下，在类外面只能读，不能写
+            Dictionary<string, int> details = bookA.Details;
+            // 读取并打印details
+            foreach (var item in details)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}");
+            }
+            // 实例化JsonSerializerOptions
+            JsonSerializerOptions options = new JsonSerializerOptions()
+            {
+                WriteIndented = true,
+                IgnoreNullValues = true,
+                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
+                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
+            };
+            // 将实例化对象bookA序列成json字符串
+            string bookaJson = JsonSerializer.Serialize(bookA, options);
+            // 里面包含details的各种内容
+            Console.WriteLine(bookaJson);
+            // 将之前序列化之后获得的字符串进行反序列化
+            BookA bookA1 = JsonSerializer.Deserialize<BookA>(bookaJson, options);
+            // 自定义的方法，获取类的所有属性
+            Dictionary<string, string> bookA1Prop = GetPropertyValue<BookA>(bookA1);
+            // private set属性访问器的字典details被成功反序列化
+            foreach (var item in bookA1Prop)
+            {
+                Console.WriteLine($"{item.Key}\t{item.Value}");
+            }
+        }
+
+        /// <summary>
         /// Json
         /// </summary>
         internal void TestJson()
@@ -664,110 +1097,6 @@ namespace ConsoleApp1
             DefaultFun defaultFun = new DefaultFun();
             //调用实例化对象的方法
             defaultFun.ChangeName("新的Name");
-        }
-
-        /// <summary>
-        /// 格式化输出sjon
-        /// </summary>
-        internal void FormatJson()
-        {
-            // 先定义一个json字符串
-            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
-            Console.WriteLine(jsonText);
-            // 将表示单个 JSON 字符串值的文本分析为 JsonDocument
-            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
-            {
-                // 序列化
-                string formatJson = JsonSerializer.Serialize(jsonDocument, new JsonSerializerOptions()
-                {
-                    // 整齐打印
-                    WriteIndented = true,
-                    Encoder = JavaScriptEncoder.Create(UnicodeRanges.All)
-                });
-                // 格式化输出
-                Console.WriteLine(formatJson);
-                // jsondocument 格式化输出为json字符串
-                string a = jsonDocument.JDFormatToString();
-                // 格式化字符串
-                string b = jsonText.TOJsonString();
-                Console.WriteLine(a);
-                Console.WriteLine(b);
-            }
-        }
-
-        /// <summary>
-        /// JsonDocument使用
-        /// </summary>
-        internal void FormatJson2()
-        {
-            Console.WriteLine("对json字符串进行dom操作");
-            string jsonText = "{\"ClassName\":\"Science\",\"Final\":true,\"Semester\":\"2019-01-01\",\"Students\":[{\"Name\":\"John\",\"Grade\":94.3},{\"Name\":\"James\",\"Grade\":81.0},{\"Name\":\"Julia\",\"Grade\":91.9},{\"Name\":\"Jessica\",\"Grade\":72.4},{\"Name\":\"Johnathan\"}],\"Teacher'sName\":\"Jane\"}";
-            using (JsonDocument jsonDocument = JsonDocument.Parse(jsonText))
-            {
-                JsonElement root = jsonDocument.RootElement;
-                JsonElement students = root.GetProperty("Students");
-                JsonElement semester = root.GetProperty("Semester");
-                // 获取json的值类型
-                Console.WriteLine(semester.ValueKind);
-                Console.WriteLine(semester);
-                // 检测json的值类型
-                Console.WriteLine(students.ValueKind == JsonValueKind.Array);
-                Console.WriteLine(semester.GetString());
-
-                // 获取数组长度
-                Console.WriteLine(students.GetArrayLength());
-                // EnumerateArray 一个枚举器，它用于枚举由该 JsonElement 表示的 JSON 数组中的值。
-                foreach (JsonElement student in students.EnumerateArray())
-                {
-                    Console.WriteLine(student);
-                    Console.WriteLine(student.ValueKind);// object
-                    // 获取属性Name的string值
-                    Console.WriteLine(student.GetProperty("Name").GetString());
-                    //Console.WriteLine(student.GetProperty("Grade").GetDouble());
-                }
-                Console.WriteLine("关于搜索不好的示范");
-                Console.WriteLine(students[1]);
-                Console.WriteLine("示范结束");
-                Console.WriteLine(root.TryGetProperty("Semester", out JsonElement value));
-                Console.WriteLine(value.GetString());
-            }
-        }
-
-        /// <summary>
-        /// 运行解答cnblog朋友的疑惑
-        /// </summary>
-        internal void TestCnBlog()
-        {
-            // 实例化对象
-            BookA bookA = new BookA();
-            // details的set为private，有JsonInclude特性来修饰，正常情况下，在类外面只能读，不能写
-            Dictionary<string, int> details = bookA.Details;
-            // 读取并打印details
-            foreach (var item in details)
-            {
-                Console.WriteLine($"{item.Key}\t{item.Value}");
-            }
-            // 实例化JsonSerializerOptions
-            JsonSerializerOptions options = new JsonSerializerOptions()
-            {
-                WriteIndented = true,
-                IgnoreNullValues = true,
-                Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
-                NumberHandling = JsonNumberHandling.AllowReadingFromString | JsonNumberHandling.WriteAsString
-            };
-            // 将实例化对象bookA序列成json字符串
-            string bookaJson = JsonSerializer.Serialize(bookA, options);
-            // 里面包含details的各种内容
-            Console.WriteLine(bookaJson);
-            // 将之前序列化之后获得的字符串进行反序列化
-            BookA bookA1 = JsonSerializer.Deserialize<BookA>(bookaJson, options);
-            // 自定义的方法，获取类的所有属性
-            Dictionary<string, string> bookA1Prop = GetPropertyValue<BookA>(bookA1);
-            // private set属性访问器的字典details被成功反序列化
-            foreach (var item in bookA1Prop)
-            {
-                Console.WriteLine($"{item.Key}\t{item.Value}");
-            }
         }
     }
 }
