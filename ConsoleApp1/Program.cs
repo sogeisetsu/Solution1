@@ -12,7 +12,10 @@ namespace ConsoleApp1
         {
             Console.WriteLine("Hello World!");
             TestA testA = new();
-            testA.BaseAndPai();
+            //testA.BaseAndPai();
+            Console.WriteLine("-=-=-=-=-=-=-=-=-=-=-");
+            //testA.BaseAndPai2();
+            testA.TestInterface();
         }
     }
 }

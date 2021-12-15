@@ -402,6 +402,7 @@ namespace ConsoleApp1
     /// </summary>
     public sealed class Tom : Human
     {
+
         public Tom()
         {
         }
@@ -435,6 +436,8 @@ namespace ConsoleApp1
     /// </summary>
     public interface IAllLIfe
     {
+        private static string _aa;
+
         /// <summary>
         /// 接口可以包含静态字段，并可以为其赋值
         /// </summary>
@@ -456,9 +459,34 @@ namespace ConsoleApp1
         /// <param name="name"> </param>
         public void PraiseLife(string name);
 
-        void Hh()
+        /// <summary>
+        /// 接口可以有默认实现
+        /// </summary>
+        public void Hh()
         {
             Console.WriteLine("接口的默认实现");
+        }
+
+        /// <summary>
+        /// 静态属性可以提供默认值
+        /// </summary>
+        public static int MyProperty { get; set; } = 1;
+
+        public static void CC()
+        {
+            Console.WriteLine("dsf");
+        }
+
+        public string AA
+        {
+            get
+            {
+                return _aa;
+            }
+            set
+            {
+                _aa = value;
+            }
         }
 
 
@@ -490,6 +518,12 @@ namespace ConsoleApp1
         {
             Console.WriteLine($"赞美生命{name}");
         }
+
+        public void Hh()
+        {
+            Console.WriteLine("对接口的默认实现进行重写");
+        }
+
     }
 
     /// <summary>
@@ -506,16 +540,156 @@ namespace ConsoleApp1
             set { _score = value; }
         }
 
-        public void AMethod()
+        public static int c = 0;
+
+        /// <summary>
+        /// 虚拟属性
+        /// </summary>
+        public virtual int Width { get; set; }
+
+        public virtual void AMethod()
         {
-            Console.WriteLine("基类的方法");
+            Console.WriteLine("基类的虚拟方法");
         }
+
+        public override string ToString()
+        {
+            return $"此类被打印{MethodBase.GetCurrentMethod().DeclaringType.FullName}";
+        }
+
+        public void SuperMethod()
+        {
+            Console.WriteLine($"基类的方法{MethodBase.GetCurrentMethod().Name}");
+        }
+
 
     }
 
+    /// <summary>
+    /// 派生类
+    /// </summary>
     public class ClassB : ClassA
     {
+        public int High { get; init; }
 
+        /// <summary>
+        /// 重写基类的虚拟方法
+        /// </summary>
+        public override void AMethod()
+        {
+            Console.WriteLine("重写基类的虚拟方法");
+        }
+
+        private int _width = 10;
+
+        /// <summary>
+        /// 重写基类的虚拟属性
+        /// </summary>
+        public override int Width
+        {
+            get
+            {
+                return this._width;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    this._width = value;
+                }
+            }
+        }
+
+        public void TestBaseMethod()
+        {
+
+            Console.WriteLine($"派生类没有override的成员this.Score\t{this.Score}");
+            Console.WriteLine($"通过base访问派生类没有override的成员base.Score\t{base.Score}");
+            Console.WriteLine($"base.Score == this.Score\t{base.Score == this.Score}");
+            Console.WriteLine($"派生类已经override的成员this.Width\t{this.Width}");
+            Console.WriteLine($"通过base访问已经在派生类中重写的成员base.Width\t{base.Width}");
+            Console.WriteLine($"base.Width==this.Width\t{base.Width == this.Width}");
+            #region 结果
+
+            /*
+            派生类没有override的成员this.Score      0
+            通过base访问派生类没有override的成员base.Score  0
+            base.Score == this.Score        True
+            派生类已经override的成员this.Width      10
+            通过base访问已经在派生类中重写的成员base.Width  0
+            base.Width==this.Width  False
+             */
+            #endregion
+        }
+
+
+        public void TestStatic()
+        {
+            Console.WriteLine(this);
+            Console.WriteLine(base.Width);
+            Console.WriteLine();
+        }
+    }
+
+    public interface A
+    {
+        /// <summary>
+        /// 接口的方法，并在接口中提供默认实现
+        /// </summary>
+        public void one()
+        {
+            Console.WriteLine($"接口成员的默认实现{MethodBase.GetCurrentMethod().DeclaringType.FullName}.{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 接口的属性
+        /// </summary>
+        public int Age { get; set; }
+
+        /// <summary>
+        /// 接口的常量
+        /// </summary>
+        public const string a = "接口的常量";
+
+        /// <summary>
+        /// c#8.0开始，接口中可以有静态字段
+        /// </summary>
+        public static int aa;
+
+        /// <summary>
+        /// 接口中可以有静态构造函数
+        /// </summary>
+        static A()
+        {
+            Console.WriteLine($"{MethodBase.GetCurrentMethod().DeclaringType.FullName}+.+{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 非public、非私有、非静态成员
+        /// </summary>
+        protected internal void CDF();
+
+    }
+
+    public class B : A
+    {
+        public int Age { get; set; } = 1;
+
+        /// <summary>
+        /// 对默认实现进行重写(再次实现)
+        /// </summary>
+        public void one()
+        {
+            Console.WriteLine($"重写{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 实现非public、非私有、非静态成员不能有访问修饰符
+        /// </summary>
+        void A.CDF()
+        {
+            Console.WriteLine("internal实现");
+        }
     }
 
     public class TestA
@@ -573,8 +747,26 @@ namespace ConsoleApp1
         public void BaseAndPai2()
         {
             ClassB classB = new ClassB();
+            ClassA classA = new ClassB();//向上转型
+            ClassB classBDown = (ClassB)classA;//向下转型
+            Console.WriteLine(classB);
             // 调用基类的方法
             classB.AMethod();
+            Console.WriteLine("-=-=-=-=-=-=-=--=-=-=-=-=");
+            classB.TestBaseMethod();
+            Console.WriteLine("-=-=-=-=-=-=-=--=-=-=-=-=");
+            classB.TestStatic();
+            Console.WriteLine($"ClassB.c\t{ClassB.c}");
+        }
+
+        public void TestInterface()
+        {
+            // 要调用实现类实现的非public成员，只能在实例化时声明为接口
+            A a = new B();
+            a.one();
+
+            a.CDF();
+            Console.WriteLine(A.a);
         }
 
         /// <summary>
