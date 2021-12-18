@@ -230,6 +230,8 @@ namespace ConsoleApp1
     {
         private int _age = 1;
 
+        public static int a = 1;
+
         /// <summary>
         /// 非抽象成员
         /// </summary>
@@ -661,13 +663,22 @@ namespace ConsoleApp1
         /// </summary>
         static A()
         {
-            Console.WriteLine($"{MethodBase.GetCurrentMethod().DeclaringType.FullName}+.+{MethodBase.GetCurrentMethod().Name}");
+            Console.WriteLine($"接口的静态构造函数{MethodBase.GetCurrentMethod().DeclaringType.FullName}+.+{MethodBase.GetCurrentMethod().Name}");
         }
 
         /// <summary>
         /// 非public、非私有、非静态成员
         /// </summary>
-        protected internal void CDF();
+        void CDF();
+
+        /// <summary>
+        /// 接口的静态方法
+        /// </summary>
+        public static void HiH()
+        {
+            Console.WriteLine($"接口的静态方法{MethodBase.GetCurrentMethod().DeclaringType.FullName}.{MethodBase.GetCurrentMethod().Name}");
+        }
+
 
     }
 
@@ -686,9 +697,76 @@ namespace ConsoleApp1
         /// <summary>
         /// 实现非public、非私有、非静态成员不能有访问修饰符
         /// </summary>
-        void A.CDF()
+        public void CDF()
         {
             Console.WriteLine("internal实现");
+        }
+
+    }
+
+    public interface IA
+    {
+        void GO();
+        void H();
+        internal void Ha();
+    }
+
+    public class IAA : IA
+    {
+        public void GO()
+        {
+            Console.WriteLine($"{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        public void H()
+        {
+            Console.WriteLine($"{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 显式接口实现非public成员
+        /// </summary>
+        void IA.Ha()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public interface IB
+    {
+        void GO();
+        void H();
+    }
+
+    public class AB : IA, IB
+    {
+        /// <summary>
+        /// 两个接口的GO方法的实现都是这一个方法
+        /// </summary>
+        public void GO()
+        {
+            Console.WriteLine($"方法{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 显示实现接口
+        /// </summary>
+        void IA.H()
+        {
+            Console.WriteLine($"显式实现IA的{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        /// <summary>
+        /// 显示实现接口
+        /// </summary>
+        void IB.H()
+        {
+            Console.WriteLine($"显式实现IB的{MethodBase.GetCurrentMethod().Name}");
+        }
+
+        void IA.Ha()
+        {
+            Console.WriteLine("实现的此成员在接口中不是public");
         }
     }
 
@@ -761,12 +839,32 @@ namespace ConsoleApp1
 
         public void TestInterface()
         {
-            // 要调用实现类实现的非public成员，只能在实例化时声明为接口
+            // 实例化时，声明类型指向接口
             A a = new B();
+            // 实例化时，声明类型指向实现类自己
+            B b = new B();
             a.one();
-
-            a.CDF();
+            Console.WriteLine("-=-=-=-=-=-=-=-=-=-=");
             Console.WriteLine(A.a);
+            A.HiH();
+            //Console.WriteLine(B.a);
+            /*
+             接口的常量
+             接口的静态构造函数ConsoleApp1.A+.+.cctor
+             接口的静态方法ConsoleApp1.A.HiH
+             */
+
+        }
+
+        public void TestInterface2()
+        {
+            AB a = new AB();
+            IA b = new AB();
+            IB c = new AB();
+            //a.H(); 无法通过实现类调用显示接口实现，只能通过指向接口的实现类来调用显示接口实现
+            b.H();
+            c.H();
+
         }
 
         /// <summary>

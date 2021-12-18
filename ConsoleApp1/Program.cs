@@ -16,6 +16,7 @@ namespace ConsoleApp1
             Console.WriteLine("-=-=-=-=-=-=-=-=-=-=-");
             //testA.BaseAndPai2();
             testA.TestInterface();
+            testA.TestInterface2();
         }
     }
 }
