@@ -416,16 +416,17 @@ namespace ShowCase
                 int b = 0;
 
                 ChangeFiledNotInitForRef(ref a);
+
                 Console.WriteLine($"在函数外部\na\t{a}\nb\t{b}");
                 //ChangeFiledNotInitForRef(ref a);
-                int aa=12;
+                int aa = 12;
                 ChangeFiledNotInitForRef(out aa);
                 Console.WriteLine($"在函数外部\naa\t{aa}");
                 Console.WriteLine("ref 和 out 的区别是ref必须在调用之前赋值，out必须在函数内部赋值");
                 ChangeParams(1, 2, 4, 56, 6);
                 Console.WriteLine("-=-=-=-=-=-=+++++++++++");
                 StartList();
-                int inin=12;
+                int inin = 12;
                 ChangeIn(in inin);
             }
 
