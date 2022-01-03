@@ -10,7 +10,7 @@ namespace ConsoleApp2
         /// </summary>
         public void DriveInfoT()
         {
-            DriveInfo driveInfo = new DriveInfo("C");
+            DriveInfo driveInfo = new DriveInfo("C"); // 实例化C盘的driveinfo
             Console.WriteLine($"driveInfo.GetType()\t{driveInfo.GetType()}");
             Console.WriteLine($"驱动器名称\t{driveInfo.Name}");
             Console.WriteLine($"驱动器类型\t{driveInfo.DriveType}");
@@ -20,6 +20,68 @@ namespace ConsoleApp2
             Console.WriteLine($"驱动器根目录\t{driveInfo.RootDirectory}");
             Console.WriteLine(GetFileSize(driveInfo.TotalSize));
             Console.WriteLine(ConvertSize.GetMB(driveInfo.TotalSize));
+            DriveInfo[] driveInfos = DriveInfo.GetDrives();
+            Array.ForEach<DriveInfo>(driveInfos, item =>
+            {
+                Console.WriteLine(item.Name);
+                Console.WriteLine(item.VolumeLabel);
+            });
+        }
+
+        /// <summary>
+        /// 目录操作
+        /// </summary>
+        public void DirectoryInfoT()
+        {
+            //如果要多次重用某个对象，请考虑使用的实例方法
+            //（而不是 DirectoryInfo 类的相应静态方法 Directory ），
+            //因为安全检查并不总是必需的。
+
+            // 创造实例
+            DirectoryInfo cc = new DirectoryInfo("./cc");
+            DirectoryInfo ccff = new DirectoryInfo(@"./cc/ff");
+            if (!cc.Exists) // 检查是否存在
+            {
+                cc.Create(); // 创建目录
+            }
+            if (!ccff.Exists)
+            {
+                ccff.Create();
+            }
+            cc.CreateSubdirectory("aa"); // 在当前目录创造子目录
+            Console.WriteLine($"绝对路径\t{cc.FullName}");// 获取文件夹的绝对路径
+            Console.WriteLine($"root\t{cc.Root}");
+            Console.WriteLine($"目录名称{cc.Name}");
+            FileInfo[] fileInfos = cc.GetFiles();
+            DirectoryInfo[] directoryInfos = cc.GetDirectories();
+            Console.WriteLine(directoryInfos.Length);
+            Array.ForEach(fileInfos, item =>
+            {
+                Console.WriteLine(item);
+            });
+            Console.WriteLine(fileInfos.Length);
+            Console.WriteLine($"移动前的路径{cc.Name}"); // cc
+            if (Directory.Exists("./dd") == false) // 这是静态类Directory的方法，若dd目录已经存在，会引发IOException。
+            {
+                cc.MoveTo("./dd");
+            }
+            Console.WriteLine(cc.Name); // dd
+            cc.Delete(true); // 删除目录，因为目录不为空所以需要true
+            Console.WriteLine(cc.Exists);
+            DirectoryInfo deskTop = new DirectoryInfo(@"C:\Users\苏月晟\Desktop");
+            DirectoryInfo hIO = new DirectoryInfo(@"C:\Users\苏月晟\Desktop\HIO");
+            if (!hIO.Exists)
+            {
+                hIO.Create();
+            }
+            Console.WriteLine(hIO.Name);
+            Console.WriteLine(hIO.FullName);
+            Console.WriteLine(hIO.Attributes);
+            Console.WriteLine(hIO.Extension); // 文件夹拓展名
+            Console.WriteLine($"创建时间\t{hIO.CreationTime}");
+            Console.WriteLine($"写入时间\t{hIO.LastWriteTime}");
+            Console.WriteLine($"访问时间\t{hIO.LastAccessTime}");
+
         }
 
         /// <summary>

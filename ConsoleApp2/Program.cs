@@ -8,6 +8,7 @@ namespace ConsoleApp2
         {
             IOIO iOIO = new IOIO();
             iOIO.DriveInfoT();
+            iOIO.DirectoryInfoT();
         }
     }
 }
